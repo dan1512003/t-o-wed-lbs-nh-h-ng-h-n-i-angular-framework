@@ -1,0 +1,32 @@
+name: Angular CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.11.0
+
+      - name: Check Node version
+        run: node -v
+
+      - run: npm install
+
+      - name: Run unit tests
+        run: npm test
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+
+      - name: Build Angular
+        run: npm run build -- --configuration production
