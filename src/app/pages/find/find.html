@@ -1,0 +1,71 @@
+<div class="flex-fill w-100 bg-primary"
+
+style="height: 569px;"
+
+>
+  
+ <form (ngSubmit)="onSubmit()" 
+  class="d-flex justify-content-center align-items-center gap-3  w-100"
+  style="
+    height: 70px; 
+    position: sticky; 
+    top: 70px; 
+    z-index:9;
+  "
+ >
+ 
+
+  
+      <div class="text-black d-flex justify-content-between  " 
+  style="width: 90%;
+  height:40px;
+  ">
+       <div class="text-black d-flex overflow-hidden align-items-center bg-white"
+        style="border:1px solid grey; border-radius:4px; width: 80%;">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text"
+             
+               name="keyword"
+               class="form-control"
+               placeholder="Location, Restaurant, or Cuisine"
+               style="border: none; box-shadow: none; outline: none;">
+      </div>
+      <button type="submit" class="btn btn-danger text-center" style="width:100px;">
+        Find
+      </button>
+    </div>
+  </form>
+<div
+class="bg-primary"
+style="
+height: 50px;
+position:sticky;
+top:140px;
+border-bottom: 1px solid grey;
+z-index: 9;
+
+"
+>
+</div>
+
+  <!-- Restaurant list + map -->
+  <div class="row g-3 align-items-start bg-white w-100 m-0">
+    <div class="col-12 col-md-6 col-lg-4 col-xl-7 bg-white text-black m-0 p-0">
+      <div>10 restaurant</div>
+      <div class="bg-danger">
+        <div class="row" style="cursor:pointer;" >
+          <div class="col-4" style="height:150px;">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" class="img-fluid" style="height:100%; width:100%; object-fit:cover;">
+          </div>
+          <div class="col-7"> cột phải </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-md-flex col-md-6 col-lg-8 col-xl-5 m-0 p-0 bg-danger" 
+     style="height:449px; position: sticky; top:190px;">
+      <div id="map" style="height:100%; width:100%;"></div>
+    </div>
+  </div>
+
+</div>
