@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 interface CalendarDay {
   date: Date;
   isOtherMonth: boolean;
@@ -14,17 +14,24 @@ interface CalendarDay {
 })
 export class Home {
 
-  keyword = '';
-
+  keyword = input<string>('');    
+  keywordChange = output<string>();
+constructor() {
+  
+    effect(() => {
+      console.log('Keyword changed:', this.keyword());
+    });
+  }
   ngOnInit() {
    
   }
 
-  
 
   onSubmit() {
-    console.log('Searching:', {
-      keyword: this.keyword
-    });
+   
   }
+  onInput(event:Event){
+   const value = (event.target as HTMLInputElement).value;
+   this.keywordChange.emit(value);
+}
 }

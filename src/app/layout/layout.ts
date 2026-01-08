@@ -12,8 +12,18 @@ import { Footer } from '../components/footer/footer';
 })
 export class Layout {
    isSticky = signal(false);
+   keyword = signal('');
+   
   onActivate(event: any) {
- 
+ if (event.keyword && event.keywordChange) {
+     
+       event.keyword=this.keyword;
+      
+      
+      event.keywordChange.subscribe((value: string) => {
+        this.keyword.set(value);
+      });
+    }
     if (event.stickyChange) {
    
       event.stickyChange.subscribe((sticky: boolean) => {

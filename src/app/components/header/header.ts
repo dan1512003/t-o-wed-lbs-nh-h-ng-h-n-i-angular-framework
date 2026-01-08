@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input} from '@angular/core';
+import { Component, effect, input, output, signal} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -8,17 +8,20 @@ import { Component, input} from '@angular/core';
   styleUrl: './header.scss',
 })
 export class Header {
-  sticky=input<boolean>(false);
-  ngOnInit() {
-   
-    
-  }
-
-
-
-showUser = false;
+  showUser = false;
   showSearch = false;
 
+  keyword = input<string>('');    
+  keywordChange = output<string>();
+  sticky=input<boolean>(false);
+  ngOnInit() {
+  
+  }
+ 
+onInput(event:Event){
+   const value = (event.target as HTMLInputElement).value;
+   this.keywordChange.emit(value);
+}
   toggleUser() {
     this.showUser = !this.showUser;
   }
