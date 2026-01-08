@@ -224,11 +224,11 @@ describe('Diet', () => {
       expect(res[0].diet).toBe('vietnamese');
     });
 
-    // Fake request
+   
     const req = httpMock.expectOne(`${baseUrl}/api/diet`);
     expect(req.request.method).toBe('GET');
 
-    // flush fake data
+ 
     req.flush(mockDietList);
   });
 });
