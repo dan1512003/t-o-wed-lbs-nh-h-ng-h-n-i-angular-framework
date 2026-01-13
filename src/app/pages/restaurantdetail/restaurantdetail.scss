@@ -1,0 +1,214 @@
+@use "sass:color";
+h5{
+  position: relative;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+h5.active {
+  color: red; 
+  font-weight: bold;
+}
+h5::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50px;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+h5.active::after {
+  width: 100%;
+}
+
+.menu-item {
+ 
+ 
+  background-color: red; 
+  border-radius: 6px;        
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+     background-color: color.scale(red, $lightness: 20%);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+   
+  }}
+
+ .rating-row {
+  width: 100%;
+  max-width: 550px;
+  margin-bottom: 0.5rem; 
+  display: flex;          
+  align-items: center;    
+
+  .score {
+    width: 20px;
+    font-weight: bold;
+    margin-right: 0.5rem; 
+  }
+
+  .track {
+    flex-grow: 1;
+    height: 15px;
+    background-color: #f0f0f0;
+    border: 1px solid grey;
+    border-radius: 6px;
+    overflow: hidden;
+
+    .fill {
+      height: 100%;
+      background-color: red;
+      border-radius: 6px;
+      transition: width 0.5s ease;
+    }
+  }
+}
+.star-container{
+    height: 40px;
+    margin-bottom: 20px;
+
+}
+.star-wrapper {
+  width: 40px;
+  height: 40px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.star-wrapper div {
+  font-size: 40px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+
+
+.review {
+  margin-left: 20px;
+  margin-top: 16px;
+}
+
+
+
+.review textarea {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  height:120px;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.review textarea:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.15);
+}
+
+.rating-row {
+  margin: 12px 0;
+}
+
+
+
+.bottom-sheet-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  background-color: white;
+  border-radius: 16px;      
+  margin-bottom: 0;
+  animation: slideUp 0.3s ease-out;
+  overflow: hidden;         
+  display: flex;
+  flex-direction: column;   
+}
+
+.sheet-header{
+  position: sticky;
+  top: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  z-index: 1;
+}
+
+.sheet-footer{
+  display: flex;
+   justify-content: center;
+  align-items:center ;
+  padding: 12px 16px;
+   width: 100%;
+   background-color: red;
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.sheet-footer button{
+  min-width: 100px;
+}
+.close-btn{
+  position: absolute;
+  left: 16px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+
+.sheet-content {
+  overflow-y: auto;        
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+  flex-grow: 1;           
+}
+
+@keyframes slideUp{
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+
+@media (min-width: 768px) {
+  .bottom-sheet{
+   
+    height:80%;
+    border-radius: 16px ;
+    margin-bottom: 70px;
+  }
+}

@@ -1,0 +1,173 @@
+<div class="flex-fill w-100
+"
+style="height: 500px; position: relative;z-index: 1;"
+>
+
+
+@if(offsetY() <= 388){
+  <div
+  class="search-panel"
+
+  [ngClass]="{ left: screenWidth > 800, center: screenWidth <= 800 }"
+>
+  <!-- Vị trí của bạn -->
+  <div class="row-start">
+  <div class="start-icon-custom">
+    <div class="circle-outer">
+      <div class="circle-middle">
+        <div class="circle-inner"></div>
+      </div>
+    </div>
+  </div>
+  <span class="start-text">Vị trí của bạn</span>
+</div>
+
+
+  <!-- Divider -->
+  <div class="divider-row">
+    <i class="fa-solid fa-ellipsis-vertical"></i>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Search -->
+  <div class="rowsearch">
+    <i class="fa-solid fa-location-dot destination-icon"></i>
+
+    <input
+    style="border: none;
+    outline: none;
+    flex: 1;
+    margin-left: 7px;
+    font-size: 14px;"
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Nhập vị trí nhà hàng"
+      (input)="onSearchChange()"
+      (keyup.enter)="submitSearch()"
+    />
+  </div>
+
+@if(results.length > 0){
+<div class="results" >
+   @for (item of results; track $index) {
+
+     <div
+      class="result-item"
+ 
+      (click)="pickResult(item)"
+    >
+      <i class="fa-solid fa-location-dot"></i>
+
+      <div class="result-text">
+        <div class="name">{{ item.name }}</div>
+        <div class="address">{{ item.displayName }}</div>
+      </div>
+    </div>
+   }
+  </div>
+}
+  
+
+
+
+</div>
+}
+     <div id="map" style="height:100%; width:100%; z-index: 1; margin: 0;padding: 0;"></div>
+
+
+<!-- Draggable Panel -->
+@if (!isClickMarker()) {
+  <div class="draggable-panel"
+       [ngClass]="{ 'left-panel': screenWidth > 800, 'center-panel': screenWidth <= 800 }"
+       #panel>
+
+  
+    <div class="drag-handle" (mousedown)="startDrag($event)" (touchstart)="startDrag($event)">
+      <i class="fa-solid fa-minus"></i>
+    </div>
+
+    <!-- Direction Row -->
+    <div class="direction-row">
+      @for (dir of typedirection; track dir.name;let i = $index) {
+        <div class="direction-item" (click)="selectDirection(i)">
+          <div class="icon-box">
+            <i [class]="dir.icon"></i>
+          </div>
+          <div class="underline" [class.selected]="directionselect === dir.name"></div>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- Restaurant Panel -->
+@if (isClickMarker()) {
+  <div class="restaurant-panel">
+    <div class="panel-overlay">
+      <div class="restaurant-card" (click)="goToRestaurantPage()">
+
+        <!-- Restaurant Image -->
+        <div class="restaurant-image" [ngStyle]="{
+          'background-image': restaurant?.image ? 'url(' + restaurant.image + ')' : 'none',
+          'background-color': restaurant?.image ? 'transparent' : 'grey'
+        }">
+          <button class="close-btn" (click)="closeMarker($event)">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+
+        <!-- Restaurant Name -->
+        <div class="restaurant-name">{{ restaurant.name }}</div>
+
+        <!-- Star Rating -->
+        <div class="d-flex align-items-center justify-content-start">
+          <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
+
+          @for ( i of [].constructor(totalStars); track i) {
+            <div class="d-flex align-items-center justify-content-start star-container">
+              <div class="star-wrapper" [ngStyle]="{
+                'position': 'relative',
+                'width': '25px',
+                'height': '30px',
+                'margin': '0',
+                'padding': '0',
+                'display': 'flex'
+              }">
+                <div [ngStyle]="{
+                  color: 'lightgray',
+                  fontSize: '30px',
+                  lineHeight: '1',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0'
+                }">★</div>
+
+                <div [ngStyle]="{
+                  color: 'red',
+                  fontSize: '30px',
+                  lineHeight: '1',
+                  position: 'absolute',
+                  top: '0',
+                  left: '0',
+                  width: getStarFill(i) + '%',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap'
+                }">★</div>
+              </div>
+            </div>
+          }
+        </div>
+
+    
+        <div class="restaurant-hours">{{ restaurant.openingHour }}</div>
+
+      
+        <div class="tap-to-open">Tap to open page</div>
+
+      </div>
+    </div>
+  </div>
+}
+
+
+    </div>

@@ -1,0 +1,89 @@
+.town-section {
+  padding: 8px 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  color: red;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.see-all {
+  color: #f28b82;
+  cursor: pointer;
+}
+
+
+.scroll-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.cuisine-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  cursor: pointer;
+}
+
+.cuisine-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: red;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 6px;
+}
+
+.cuisine-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  z-index: 10;
+
+  &.left {
+    left: 0;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  i {
+    font-size: 16px;
+  }
+}

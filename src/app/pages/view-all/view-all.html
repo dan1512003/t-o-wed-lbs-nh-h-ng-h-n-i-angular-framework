@@ -1,0 +1,109 @@
+<div class="flex-fill w-100">
+
+  <div class="row g-3 align-items-start w-100 m-0 p-0">
+
+    @if(!isFullMap()) {
+      <div class="col-10 col-md-6 col-lg-4 col-xl-7 bg-white text-black m-0 p-0" style="height:1500px;">
+        <div>10 restaurant</div>
+        <div class="bg-danger" (click)="onTap()">
+          <div class="row" style="cursor:pointer;">
+            <div class="col-4" style="height:150px;">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" 
+                   class="img-fluid" 
+                   style="height:100%; width:100%; object-fit:cover;">
+            </div>
+            <div class="col-7">
+              <div class="d-flex align-items-center justify-content-start">
+                <span class="d-flex align-items-center justify-content-start star-container">4.7</span>
+                
+                @for( i of [].constructor(totalStars); track i) {
+                  <div class="d-flex align-items-center justify-content-start star-container">
+                    <div class="star-wrapper"
+                         [ngStyle]="{position:'relative', width:'8px', height:'10px', display:'flex', margin:'0', padding:'0'}">
+                      <div [ngStyle]="{color:'lightgray', fontSize:'10px', lineHeight:'1', position:'absolute', top:'0', left:'0'}">★</div>
+                      <div [ngStyle]="{
+                            color:'red',
+                            fontSize:'10px',
+                            lineHeight:'1',
+                            position:'absolute',
+                            top:'0',
+                            left:'0',
+                            width:getStarFill(i)+'%',
+                            overflow:'hidden',
+                            whiteSpace:'nowrap'
+                          }">★</div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div [ngClass]="{
+          'col-12 bg-white': isFullMap(),
+          'col-2 col-md-6 col-lg-8 col-xl-5 bg-white': !isFullMap()
+        }"
+         style="height:572px; position: sticky; top:70px; margin:0; padding:0;">
+      
+      <div class="d-flex justify-content-center align-items-center"
+           (click)="toggleMap()"
+           style="width:25px; height:50px; position:absolute; top:45%; background-color:white; z-index:20;">
+        <i class="fa-solid" [ngClass]="isFullMap() ? 'fa-chevron-right' : 'fa-chevron-left'" style="color:black;"></i>
+      </div>
+
+      <div id="map" style="height:100%; width:100%; z-index:1; margin:0; padding:0;"></div>
+
+      @if(isClickMarker()) {
+        <div class="restaurant-panel">
+          <div class="panel-overlay">
+            <div class="restaurant-card" (click)="goToRestaurantPage()">
+              
+              <div class="restaurant-image" [ngStyle]="{
+                    'background-image': restaurant?.image ? 'url(' + restaurant.image + ')' : 'none',
+                    'background-color': restaurant?.image ? 'transparent' : 'grey'
+                  }">
+                <button class="close-btn" (click)="closeMarker($event)">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+
+              <div class="restaurant-name">{{ restaurant.name }}</div>
+
+              <div class="d-flex align-items-center justify-content-start">
+                <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
+
+                @for( i of [].constructor(totalStars); track i) {
+                  <div class="d-flex align-items-center justify-content-start star-container">
+                    <div class="star-wrapper"
+                         [ngStyle]="{position:'relative', width:'25px', height:'30px', display:'flex', margin:'0', padding:'0'}">
+                      <div [ngStyle]="{color:'lightgray', fontSize:'30px', lineHeight:'1', position:'absolute', top:'0', left:'0'}">★</div>
+                      <div [ngStyle]="{
+                            color:'red',
+                            fontSize:'30px',
+                            lineHeight:'1',
+                            position:'absolute',
+                            top:'0',
+                            left:'0',
+                            width:getStarFill(i)+'%',
+                            overflow:'hidden',
+                            whiteSpace:'nowrap'
+                          }">★</div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="restaurant-hours">{{ restaurant.openingHour }}</div>
+              <div class="tap-to-open">Tap to open page</div>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Find } from './find';
+import { provideRouter } from '@angular/router';
 
 describe('Find', () => {
   let component: Find;
@@ -8,7 +9,11 @@ describe('Find', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Find]
+      imports: [Find],
+
+       providers: [
+        provideRouter([]) 
+      ]
     })
     .compileComponents();
 

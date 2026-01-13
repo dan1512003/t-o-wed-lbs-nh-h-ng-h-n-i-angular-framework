@@ -1,107 +1,102 @@
-<div class="flex-fill  w-100">
- <div class="row">
-<div class="d-none d-xl-flex  col-xl-2 h-1"></div>
-<div class=" col-12 col-xl-8 ">
-    <div class="row"
-  style=" cursor:pointer;" 
->
-<div class="col-5" style="height:150px; width:150px">
-  <img 
-     src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" 
-    alt="Nhà hàng sang trọng" 
-    class="img-fluid"
-    style="height:100%; width:100%; object-fit:cover;"
-  >
-</div>
-<div class="col-7"> 
+<div class="flex-fill w-100">
+  <div class="row">
+    <div class="d-none d-xl-flex col-xl-2 h-1"></div>
 
-   <h2>Bacari Silverlake</h2> 
-</div>
-</div>
-
-<form (ngSubmit)="onSubmit()" style="margin-top: 10px">
-
-    <div class="row">
-<div class="col-10 text-black d-flex  overflow-hidden bg-white" 
-style="border:1px solid grey; border-radius:4px; height:40px;
-">
-
-   
-      
-    
-      <div class="flex-fill d-flex justify-content-between align-items-center"
-           style="border-right: 1px solid grey; padding: 4px 8px;"
-           (click)="toggleCalendar()">
-        <div>
-          <i class="fa-solid fa-calendar-days me-1"></i>
-          <span>{{ selectedDate ? (selectedDate | date: 'MMM d') : 'Select Date' }}</span>
+    <div class="col-12 col-xl-8">
+      <div class="row" style="cursor:pointer;">
+        <div class="col-5" style="height:150px; width:150px;">
+          <img 
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" 
+            alt="Nhà hàng sang trọng" 
+            class="img-fluid"
+            style="height:100%; width:100%; object-fit:cover;">
         </div>
-        <div><i class="fa-solid fa-chevron-down"></i></div>
+        <div class="col-7">
+          <h2>Bacari Silverlake</h2>
+        </div>
       </div>
 
-     
-      <div *ngIf="showCalendar"
-           style="border: 1px solid grey; border-radius:4px; position: absolute;
-                  top: 135px; left: 180px; width: 370px; height: 320px;
-                  background-color: white; z-index: 10; overflow: hidden;">
-        <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-          <button type="button" class="btn btn-outline-secondary btn-sm" (click)="prevMonth()">&lt;</button>
-          <h5 class="mb-0 fw-bold">{{ monthLabel }}</h5>
-          <button type="button" class="btn btn-outline-secondary btn-sm" (click)="nextMonth()">&gt;</button>
-        </div>
+      <form (ngSubmit)="onSubmit()" style="margin-top:10px;">
+        <div class="row">
 
-        <div class="row text-center mt-2 fw-semibold" style="font-size: 13px;">
-          <div class="col">Sun</div>
-          <div class="col">Mon</div>
-          <div class="col">Tue</div>
-          <div class="col">Wed</div>
-          <div class="col">Thu</div>
-          <div class="col">Fri</div>
-          <div class="col">Sat</div>
-        </div>
+          <div class="col-10 text-black d-flex overflow-hidden bg-white"
+               style="border:1px solid grey; border-radius:4px; height:40px;">
 
-        <div class="calendar-grid mt-1 px-2">
-          <div *ngFor="let day of days"
-               class="calendar-day"
-               [ngClass]="{
-                 'other-month': day.isOtherMonth,
-                 'today': day.isToday,
-                 'selected': day.isSelected
-               }"
-               (click)="selectDay(day)">
-            {{ day.date.getDate() }}
+            <!-- Date Selector -->
+            <div class="flex-fill d-flex justify-content-between align-items-center"
+                 style="border-right: 1px solid grey; padding: 4px 8px;"
+                 (click)="toggleCalendar()">
+              <div>
+                <i class="fa-solid fa-calendar-days me-1"></i>
+                <span>{{ selectedDate ? (selectedDate | date: 'MMM d') : 'Select Date' }}</span>
+              </div>
+              <div><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
+            <!-- Calendar Panel -->
+            @if(showCalendar) {
+              <div style="border:1px solid grey; border-radius:4px; position:absolute;
+                          top:135px; left:180px; width:370px; height:320px;
+                          background-color:white; z-index:10; overflow:hidden;">
+                
+                <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="prevMonth()">&lt;</button>
+                  <h5 class="mb-0 fw-bold">{{ monthLabel }}</h5>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="nextMonth()">&gt;</button>
+                </div>
+
+                <div class="row text-center mt-2 fw-semibold" style="font-size:13px;">
+                  <div class="col">Sun</div>
+                  <div class="col">Mon</div>
+                  <div class="col">Tue</div>
+                  <div class="col">Wed</div>
+                  <div class="col">Thu</div>
+                  <div class="col">Fri</div>
+                  <div class="col">Sat</div>
+                </div>
+
+                <div class="calendar-grid mt-1 px-2">
+                  @for( day of days ;track day.date) {
+                    <div class="calendar-day"
+                         [ngClass]="{
+                           'other-month': day.isOtherMonth,
+                           'today': day.isToday,
+                           'selected': day.isSelected
+                         }"
+                         (click)="selectDay(day)">
+                      {{ day.date.getDate() }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+         
+            <div class="flex-fill d-flex justify-content-between align-items-center"
+                 style="border-right:1px solid grey; padding: 4px 8px;">
+              <div><i class="fa-solid fa-clock"></i> <span>10:30 AM</span></div>
+              <div><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
+       
+            <div class="flex-fill d-flex justify-content-between align-items-center" style="padding: 4px 8px;">
+              <div><i class="fa-solid fa-user"></i> <span>1</span></div>
+              <div><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+
           </div>
+
+          <div class="col-2">
+            <button type="submit" class="btn btn-danger text-center" style="width:100px;">
+              Đặt Ngay
+            </button>
+          </div>
+
         </div>
-      </div>
+      </form>
 
-      <!-- Time -->
-      <div class="flex-fill d-flex justify-content-between align-items-center"
-           style="border-right: 1px solid grey; padding: 4px 8px;">
-        <div><i class="fa-solid fa-clock"></i> <span>10:30 AM</span></div>
-        <div><i class="fa-solid fa-chevron-down"></i></div>
-      </div>
-
-      <!-- People -->
-      <div class="flex-fill d-flex justify-content-between align-items-center" style="padding: 4px 8px;">
-        <div><i class="fa-solid fa-user"></i> <span>1</span></div>
-        <div><i class="fa-solid fa-chevron-down"></i></div>
-      </div>
     </div>
 
-<div class="col-2">
-    <button type="submit" 
-        class="btn btn-danger text-center" 
-        style="width:100px;">
-        Đặt Ngay
-    </button>
- </div>
-
-
-
+    <div class="d-none d-xl-flex col-xl-2 h-1"></div>
   </div>
-  </form>
-
 </div>
-
-<div class="d-none d-xl-flex  col-xl-2 h-1"></div>
- </div>

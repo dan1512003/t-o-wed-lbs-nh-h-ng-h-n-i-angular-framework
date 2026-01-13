@@ -8,12 +8,39 @@
     <div class="d-flex align-items-center p-3 text-white">
       <p class="fs-5 fw-bold mb-2 border-end pe-2">Find Restaurant</p>
 
-      <div class="d-flex align-items-center gap-2 mb-1 ms-3 text-white">
+      <div class="d-flex align-items-center gap-2 mb-1 ms-3 text-white"
+      (click)="toggleWard()"
+      
+      >
         <i class="fas fa-location-dot"></i>
-        <p class="mb-0">Phú Thọ</p>
+        <p class="mb-0">Hà Nội</p>
         <i class="fas fa-chevron-right mb-0"></i>
-        <p class="mb-0">Xuân Lãng</p>
+        <p class="mb-0">{{ selectedWard }}</p>
+        <div style="position: relative;"> 
+         @if (!showWard()) {
+        <i class="fas fa-chevron-right mb-0"></i>
+        } @else {
         <i class="fas fa-chevron-down mb-0"></i>
+        }
+
+         
+                 <!-- ward -->
+ @if (showWard()) {
+  <div class="list-ward">
+    @for (item of wards; track item) {
+      <div
+        class="d-flex justify-content-between ward-item"
+        (click)="selectWard(item, $event)"
+      >
+        <span>{{ item.ward }}</span>
+        <span>{{ item.count }}</span>
+      </div>
+    }
+  </div>
+}
+
+      </div>
+    
       </div>
     </div>
 
@@ -22,50 +49,53 @@
       <div
         (click)="toggleUser()"
         class="d-flex align-items-center gap-2 mb-1 ms-3 text-white"
-        style="cursor: pointer;"
+        style="cursor: pointer;position: relative;"
       >
         <i class="fas fa-user"></i>
         <p class="mb-0">Hàn Phi</p>
+
+  @if (showUser) {
+ 
+  <div
+    style="
+      position: absolute;
+      top: 20px;
+      right: 0;
+      width: 20px;
+      height: 10px;
+      background-color: white;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      z-index: 11;
+    "
+  ></div>
+
+ 
+  <div
+    class="text-black"
+    style="
+      position: absolute;
+      border-radius: 4px;
+      top: 30px;
+      left: 0;
+      width: 250px;
+      background-color: white;
+      z-index: 10;
+      border: 1px solid grey;
+    "
+  >
+    <h5 class="pb-2 mb-3 me-1 ms-1" style="border-bottom: 1px solid grey">
+      Xin chào, Hàn!
+    </h5>
+    <p style="cursor: pointer">Profile of me</p>
+    <p>Reservation Restaurant</p>
+    <p>Save Restaurant</p>
+    <p (click)="openSheet()">Đăng ký</p>
+  </div>
+}
+     
       </div>
 
       
-      <div
-        *ngIf="showUser"
-        style="
-          position: absolute;
-          top: 61px;
-          right: 295px;
-          width: 20px;
-          height: 10px;
-          background-color: white;
-          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-          z-index: 11;
-        "
-      ></div>
-
-     
-      <div
-        *ngIf="showUser"
-        class="text-black"
-        style="
-          position: absolute;
-          border-radius: 4px;
-          top: 70px;
-          right: 75px;
-          width: 250px;
-          background-color: white;
-          z-index: 10;
-          border: 1px solid grey;
-        "
-      >
-        <h5 class="pb-2 mb-3 me-1 ms-1" style="border-bottom: 1px solid grey">
-          Xin chào, Hàn!
-        </h5>
-        <p style="cursor: pointer">Profile of me</p>
-        <p>Reservation Restaurant</p>
-        <p>Save Restaurant</p>
-        <p>Đăng ký</p>
-      </div>
 
      
       <i (click)="toggleSearch()" class="fas fa-search ms-4 border-start ps-2"></i>
@@ -73,68 +103,197 @@
   </div>
 </header>
 
+<!-- search -->
+@if (showSearch) {
+  <div
+    id="blur"
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 9;
+    "
+  ></div>
 
-<div
-  *ngIf="showSearch"
-  id="blur"
-  style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 9;
-  "
-></div>
+  <div
+    id="overlay"
+    class="justify-content-center align-items-center"
+    style="
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: 300px;
+      background-color: white;
+      z-index: 10;
+    "
+  >
+    <div class="container py-4 text-center">
+      <i
+        (click)="toggleSearch()"
+        class="fa-solid fa-xmark"
+        style="position: absolute; top: 0; right: 0; background-color: white; z-index: 10;"
+      ></i>
 
-<div
-  *ngIf="showSearch"
-  id="overlay"
-  class="justify-content-center align-items-center"
-  style="
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    height: 300px;
-    background-color: white;
-    z-index: 10;
-  "
->
-  <div class="container py-4 text-center">
-    <i
-      (click)="toggleSearch()"
-      class="fa-solid fa-xmark"
-      style="position: absolute; top: 0; right: 0; background-color: white; z-index: 10;"
-    ></i>
+      <h2 class="fw-bold">Find a table you want</h2>
 
-    <h2 class="fw-bold">Find a table you want</h2>
+      <div class="d-flex justify-content-center gap-3">
+        <div class="text-black d-flex justify-content-between" style="width: 90%;">
+          <div
+            class="text-black d-flex overflow-hidden align-items-center"
+            style="border:1px solid grey; border-radius:4px; width:80%;"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              name="keyword"
+              class="form-control"
+              [value]="keyword()"
+              placeholder="Location, Restaurant, or Cuisine"
+              style="border: none; box-shadow: none; outline: none;"
+              (input)="onInput($event)"
+            />
+          </div>
 
-    <div class="d-flex justify-content-center gap-3">
-    
-      
-   
-      <div class="text-black d-flex justify-content-between" style="width: 90%;">
-        <div
-          class="text-black d-flex overflow-hidden align-items-center"
-          style="border:1px solid grey; border-radius:4px; width:80%;"
-        >
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input
-            type="text"
-            name="keyword"
-            class="form-control"
-            [value]="keyword()";
-            placeholder="Location, Restaurant, or Cuisine"
-            style="border: none; box-shadow: none; outline: none;"
-            (input)="onInput($event)"
-          />
+          <button type="submit" class="btn btn-danger text-center" style="width:100px;">
+            Find
+          </button>
         </div>
-        <button type="submit" class="btn btn-danger text-center" style="width:100px;">
-          Find
-        </button>
       </div>
     </div>
   </div>
-</div>
+}
+
+
+<!-- Bottom Sheet Overlay -->
+@if (showSheet) {
+  <div class="bottom-sheet-backdrop" (click)="closeSheet()">
+
+    <div class="bottom-sheet" (click)="$event.stopPropagation()">
+
+      <div class="sheet-header">
+        <span class="close-btn" (click)="closeSheet()">
+          <i class="fa-solid fa-x"></i>
+        </span>
+      </div>
+
+      <div class="sheet-content">
+
+   
+        @if (isLogin) {
+          <div class="pageLogin">
+
+            <div class="spacer-30"></div>
+
+          
+            @if (!isEmail) {
+              <div class="phone-row">
+                <div class="phone-icon">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div class="phone-input">
+                  <input
+                    type="text"
+                    placeholder="Phone number"
+                    [(ngModel)]="phoneNumber"
+                  />
+                </div>
+              </div>
+            }
+
+         
+            @if (isEmail) {
+              <div class="phone-row">
+                <div class="phone-icon">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div class="phone-input">
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    [(ngModel)]="email"
+                  />
+                </div>
+              </div>
+            }
+
+            <div class="spacer-50"></div>
+
+            <div class="next-wrapper">
+              <button class="next-btn" (click)="handleNext()">NEXT</button>
+            </div>
+
+            <div class="spacer-50"></div>
+
+           
+            @if (!isEmail) {
+              <div class="use-email" (click)="goToEmail()">Use email instead</div>
+            }
+
+            @if (isEmail) {
+              <div class="use-email" (click)="goToPhone()">Use phone instead</div>
+            }
+
+          </div>
+        }
+
+        <!-- Register -->
+        @if (!isLogin) {
+          <div class="pageRegister">
+
+            <div class="spacer-30"></div>
+
+            <div class="input-wrapper">
+              <input
+                type="text"
+                placeholder="First name"
+                [(ngModel)]="formData.firstName"
+              />
+            </div>
+
+            <div class="spacer-20"></div>
+
+            <div class="input-wrapper">
+              <input
+                type="text"
+                placeholder="Last name"
+                [(ngModel)]="formData.lastName"
+              />
+            </div>
+
+            <div class="spacer-20"></div>
+
+            <div class="input-wrapper">
+              <input
+                type="email"
+                placeholder="Email"
+                [(ngModel)]="formData.email"
+              />
+            </div>
+
+            <div class="spacer-20"></div>
+
+            <div class="input-wrapper">
+              <input
+                type="tel"
+                placeholder="Number phone"
+                [(ngModel)]="formData.phone"
+              />
+            </div>
+
+            <div class="spacer-50"></div>
+
+            <div class="next-wrapper">
+              <button class="next-btn" (click)="handleNext()">NEXT</button>
+            </div>
+
+          </div>
+        }
+
+      </div>
+    </div>
+  </div>
+}

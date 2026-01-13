@@ -1,24 +1,22 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, PLATFORM_ID, input, output, signal } from '@angular/core';
-import { ActivatedRoute, Router} from '@angular/router';
-
-
+import { Component, Inject, input, output, PLATFORM_ID, signal } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-find',
+  selector: 'app-view-all',
   imports: [CommonModule],
-  templateUrl: './find.html',
-  styleUrl: './find.scss',
+  templateUrl: './view-all.html',
+  styleUrl: './view-all.scss',
 })
-export class Find implements AfterViewInit {
+export class ViewAll {
   totalStars :number = 5;
   overallrating : number = 4.2;
   stickyChange = output<boolean>();
   keyword = input<string>('');    
   keywordChange = output<string>();
-  isFullMap = signal<boolean>(false);
+  isFullMap= signal<boolean>(false);
   isClickMarker= signal<boolean>(false);
-     restaurant: any = {
+    restaurant: any = {
     name: 'Pizza House',
     image: 'https://via.placeholder.com/400x200', 
     openingHour: '09:00 AM - 10:00 PM',
@@ -27,17 +25,22 @@ export class Find implements AfterViewInit {
   };
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private activateroute: ActivatedRoute,
+    
     private router:Router,
   ) {
 
 
-     this.activateroute.queryParams.subscribe(params => {
-      this.keywordChange.emit(params['keyword'] ?? '');
-  
-    });
+     
   }
-  closeMarker(event: Event) {
+
+  ngOnDestroy() {
+    this.stickyChange.emit(false);
+  }
+
+  ngOnInit() {
+   
+  }
+    closeMarker(event: Event) {
    
     this.isClickMarker.set(false);
   }
@@ -48,7 +51,7 @@ export class Find implements AfterViewInit {
 
     console.log('Open restaurant page', this.restaurant);
   }
- getStarFill(index: number): number {
+  getStarFill(index: number): number {
   const fullStars = Math.floor(this.overallrating);
   const fraction = this.overallrating - fullStars;
 
@@ -56,14 +59,7 @@ export class Find implements AfterViewInit {
   if (index === fullStars) return fraction * 100; 
   return 0;                                  
 }
-  ngOnDestroy() {
-    this.stickyChange.emit(false);
-  }
-
-  ngOnInit() {
-   
-  }
-  toggleMap() {
+   toggleMap() {
   this.isClickMarker.set(false);
   this.isFullMap.set (!this.isFullMap());
 }
@@ -96,7 +92,7 @@ export class Find implements AfterViewInit {
         minZoom: 3,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(this.map);
-    const ratingText = '-- ★'
+  const ratingText = '-- ★'
   
 
 const customIcon = L.divIcon({

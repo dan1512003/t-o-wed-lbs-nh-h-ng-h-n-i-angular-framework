@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Restaurantdetail } from './restaurantdetail';
+import { TownScroll } from './town-scroll';
 import { provideRouter } from '@angular/router';
 
-describe('Restaurantdetail', () => {
-  let component: Restaurantdetail;
-  let fixture: ComponentFixture<Restaurantdetail>;
+describe('TownScroll', () => {
+  let component: TownScroll;
+  let fixture: ComponentFixture<TownScroll>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Restaurantdetail],
-       providers: [
-        provideRouter([]) 
+      imports: [TownScroll],
+       providers:[
+          provideRouter([])
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Restaurantdetail);
+    fixture = TestBed.createComponent(TownScroll);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,6 +6,10 @@ import { Restaurantdetail } from './pages/restaurantdetail/restaurantdetail';
 import { Restaurantbooking } from './pages/restaurantbooking/restaurantbooking';
 import { Bookinginfo } from './pages/bookinginfo/bookinginfo';
 import { Userprofile } from './pages/userprofile/userprofile';
+import { Direction } from './pages/direction/direction';
+import { Wardrestaurant } from './pages/wardrestaurant/wardrestaurant';
+import { ViewAll } from './pages/view-all/view-all';
+
 
 export const routes: Routes = [
 
@@ -14,11 +18,14 @@ export const routes: Routes = [
     component: Layout,
     children: [
       { path: '', component: Home },
-       { path: 'find', component: Find },
-       {path:'restaurantdetail',component:Restaurantdetail},
-        {path: 'restaurantbooking', component: Restaurantbooking },
-       {path:'bookinginfo',component:Bookinginfo},
-       {path:'userprofile',component:Userprofile},
+      { path: 'find', component: Find },
+      {path:'restaurantdetail',component:Restaurantdetail},
+      {path: 'review', component: Restaurantbooking },
+      {path:'bookinginfo',component:Bookinginfo},
+      {path:'direction',component:Direction},
+      {path:'wardrestaurant',component:Wardrestaurant},
+      {path:'viewall',component:ViewAll},
+      {path:'userprofile',component:Userprofile},
     ],
   },
 ];

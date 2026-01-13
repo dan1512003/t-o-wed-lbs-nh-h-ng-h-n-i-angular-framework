@@ -1,0 +1,41 @@
+<div class="town-section">
+
+  <div class="header">
+    <h3>Cuisine</h3>
+
+    @if (cuisines().length > itemCount) {
+      <span class="see-all" (click)="goToAll()">SEE ALL</span>
+    }
+  </div>
+
+  <div class="scroll-wrapper">
+
+    <div #scrollContainer class="scroll-row" (scroll)="checkScroll()">
+
+      @for (item of cuisines(); track item.diet) {
+        <div class="cuisine-card" (click)="goToCuisine()">
+          <div
+            class="cuisine-image"
+            [style.backgroundImage]="'url(' + (item.image || 'https://via.placeholder.com/150') + ')'"
+          ></div>
+          <div class="cuisine-title">{{ item.diet }}</div>
+        </div>
+      }
+
+    </div>
+
+    @if (canScrollLeft()) {
+      <button class="scroll-btn left" (click)="scrollLeft()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    }
+
+    @if (canScrollRight()) {
+      <button class="scroll-btn right" (click)="scrollRight()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    }
+
+  </div>
+
+</div>

@@ -19,125 +19,136 @@
         <p>Xuân lãng</p>
       </div>
 
-      <div class="d-flex justify-content-between bg-white"
-        style="position:sticky; height:50px; top:0; z-index:1;">
-        <h5>Reservation</h5>
-        <h5>Menu</h5>
-        <h5>Review</h5>
-        <h5>Detail</h5>
-      </div>
-
-      <div class="d-flex align-items-center justify-content-center mt-2 bg-white reservation"
-        style="height:70px; width:100%; position:sticky; top:50px; z-index:1;">
-        <button class="bg-danger buttonreservation" style="height:50px; width:100px;">
-          Đặt ngay
-        </button>
-      </div>
-
-      <div class="menu" style="height:500px;">
-        <h3>Menu</h3>
-        <div class="row" style="cursor:pointer;">
-          <div class="col-4" style="height:150px;">
-            <img
-              src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
-              alt="Nhà hàng sang trọng"
-              class="img-fluid"
-              style="height:100%; width:100%; object-fit:cover;"
-            >
+      <div class="bg-white" style="height:50px; position:sticky; top:70px; z-index:11;">
+        <div class="row w-100">
+          <div class="col-3">
+            <h5 (click)="scrollTo('direction')" 
+                [class.active]="activeSection() === 'direction'">Direction</h5>
           </div>
-          <div class="col-8">cột phải</div>
+          <div class="col-3">
+            <h5 (click)="scrollTo('menu')" [class.active]="activeSection() === 'menu'">Menu</h5>
+          </div>
+          <div class="col-3">
+            <h5 (click)="scrollTo('review')" [class.active]="activeSection() === 'review'">Review</h5>
+          </div>
+          <div class="col-3">
+            <h5 (click)="scrollTo('detail')" [class.active]="activeSection() === 'detail'">Detail</h5>
+          </div>
         </div>
       </div>
 
-      <div class="review">
-        <h3>Review</h3>
+      <!-- DIRECTION -->
+      <div id="direction">
+        <h3>Direction</h3>
+        <div class="d-flex align-items-center justify-content-center mt-2 bg-white reservation"
+             style="height:70px; width:100%;">
+          <div class="d-flex w-50 fw-bolder justify-content-center align-items-center menu-item"
+               style="height:50px;"
+               (click)="onTapDirection()">
+            DIRECTION
+          </div>
+        </div>
+      </div>
+
+      <!-- MENU -->
+      <div class="menu" id="menu">
+        <h3>Menu</h3>
+        <div class="d-flex justify-content-center" style="cursor:pointer;">
+          <div class="d-flex w-50 fw-bolder justify-content-center align-items-center menu-item" 
+               style="height:50px;">
+            VIEW FULL MENU
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEW -->
+      <div class="review" id="review">
+        <div class="d-flex justify-content-between">
+          <h3>Review</h3>
+          <span style="color:blue;" (click)="openRateSheet()">Add Review</span>
+        </div>
+
         <div class="row" style="border-bottom:1px solid grey;">
           <div class="col-12 col-sm-6 justify-content-start align-items-center">
             <div class="d-flex align-items-center justify-content-start">
-              <h4>4.7</h4>
-              <div class="d-flex align-items-center justify-content-start">
-                <i class="fa-solid fa-star text-danger" style="font-size:25px;"></i>
-                <i class="fa-solid fa-star text-danger" style="font-size:25px;"></i>
-                <i class="fa-solid fa-star text-danger" style="font-size:25px;"></i>
-                <i class="fa-solid fa-star text-danger" style="font-size:25px;"></i>
-                <i class="fa-solid fa-star text-danger" style="font-size:25px;"></i>
-              </div>
+              <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
+              
+              @for( i of [].constructor(totalStars) ;track i) {
+                <div class="star-wrapper" 
+                     [ngStyle]="{
+                       position:'relative', width:'25px', height:'30px', display:'flex'
+                     }">
+                  <div [ngStyle]="{
+                        color:'lightgray', fontSize:'30px', lineHeight:'1',
+                        position:'absolute', top:'0', left:'0'
+                      }">★</div>
+                  <div [ngStyle]="{
+                        color:'red', fontSize:'30px', lineHeight:'1',
+                        position:'absolute', top:'0', left:'0',
+                        width:getStarFill(i)+'%', overflow:'hidden', whiteSpace:'nowrap'
+                      }">★</div>
+                </div>
+              }
             </div>
 
             <div class="row">
-              <div class="col-3 d-flex flex-column justify-content-start" style="border-right:1px solid grey;">
-                <h5 class="ms-1">4.7</h5>
-                <span>Food</span>
-              </div>
-              <div class="col-3 d-flex flex-column justify-content-start" style="border-right:1px solid grey;">
-                <h5 class="ms-1">4.7</h5>
-                <span>Service</span>
-              </div>
-              <div class="col-3 d-flex flex-column justify-content-start" style="border-right:1px solid grey;">
-                <h5 class="ms-1">4.7</h5>
-                <span>Ambicent</span>
-              </div>
-              <div class="col-3 d-flex flex-column justify-content-start">
-                <h5 class="ms-1">4.7</h5>
-                <span>Value</span>
-              </div>
+              @for( item of ratings ;track item.score) {
+                <div class="col-3 d-flex flex-column justify-content-start"
+                     [ngStyle]="{'border-right': item === ratings[ratings.length-1] ? 'none' : '1px solid grey'}">
+                  <h5 class="ms-1">{{item.score}}</h5>
+                  <span>{{item.label}}</span>
+                </div>
+              }
             </div>
           </div>
 
           <div class="col-12 col-sm-6 d-flex flex-column justify-content-center align-items-end">
-        
-            <div class="d-flex align-items-center mb-2 w-100" style="max-width:550px;">
-              <span class="me-2 fw-bold" style="width:20px;">5</span>
-              <div class="flex-grow-1 bg-light rounded" style="height:15px; border:1px solid grey;">
-                <div class="bg-danger rounded" style="width:80%; height:100%;"></div>
+            @for( bar of ratingBars; track bar.score) {
+              <div class="rating-row">
+                <span class="score">{{bar.score}}</span>
+                <div class="track">
+                  <div class="fill" [style.width]="bar.width"></div>
+                </div>
               </div>
-            </div>
-            <div class="d-flex align-items-center mb-2 w-100" style="max-width:550px;">
-              <span class="me-2 fw-bold" style="width:20px;">4</span>
-              <div class="flex-grow-1 bg-light rounded" style="height:15px; border:1px solid grey;">
-                <div class="bg-danger rounded" style="width:60%; height:100%;"></div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-2 w-100" style="max-width:550px;">
-              <span class="me-2 fw-bold" style="width:20px;">3</span>
-              <div class="flex-grow-1 bg-light rounded" style="height:15px; border:1px solid grey;">
-                <div class="bg-danger rounded" style="width:35%; height:100%;"></div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center mb-2 w-100" style="max-width:550px;">
-              <span class="me-2 fw-bold" style="width:20px;">2</span>
-              <div class="flex-grow-1 bg-light rounded" style="height:15px; border:1px solid grey;">
-                <div class="bg-danger rounded" style="width:15%; height:100%;"></div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center w-100" style="max-width:550px;">
-              <span class="me-2 fw-bold" style="width:20px;">1</span>
-              <div class="flex-grow-1 bg-light rounded" style="height:15px; border:1px solid grey;">
-                <div class="bg-danger rounded" style="width:5%; height:100%;"></div>
-              </div>
-            </div>
+            }
           </div>
         </div>
+
         <h5>2k review</h5>
-      </div>
 
-      <div class="d-flex flex-column" style="height:500px;">
-        <div class="d-flex">
-          <div style="width:50px; height:50px; background-color:purple; border-radius:50%;"></div>
-          <span class="ms-2">Dan</span>
+        <div class="d-flex flex-column">
+          <div class="d-flex">
+            <div style="width:50px; height:50px; background-color:purple; border-radius:50%;"></div>
+            <span class="ms-2">Dan</span>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-start">
+            @for(i of [].constructor(totalStars); track i) {
+              <div class="star-wrapper"
+                   [ngStyle]="{position:'relative', width:'13px', height:'15px'}">
+                <div [ngStyle]="{
+                      color:isStarActive(i,3)?'red':'lightgray',
+                      fontSize:'15px', lineHeight:'1'
+                    }">★</div>
+              </div>
+            }
+          </div>
+
+          <div><span>Food good</span></div>
         </div>
 
-        <div class="d-flex align-items-center justify-content-start mt-2">
-          <i class="fa-solid fa-star text-danger" style="font-size:15px;"></i>
-          <i class="fa-solid fa-star text-danger" style="font-size:15px;"></i>
-          <i class="fa-solid fa-star text-danger" style="font-size:15px;"></i>
-          <i class="fa-solid fa-star text-danger" style="font-size:15px;"></i>
-          <i class="fa-solid fa-star text-danger" style="font-size:15px;"></i>
+        <div class="d-flex align-items-center justify-content-center mt-2 bg-white reservation"
+             style="height:70px; width:100%;">
+          <div class="d-flex w-50 fw-bolder justify-content-center align-items-center menu-item"
+               style="height:50px;"
+               (click)="onTapReview()">
+            VIEW FULL REVIEW
+          </div>
         </div>
-        <div><span>Food good</span></div>
       </div>
 
-      <div>
+      <!-- DETAIL -->
+      <div id="detail">
         <h3>Detail</h3>
       </div>
     </div>
@@ -145,3 +156,57 @@
     <div class="d-none d-xl-flex col-xl-2 h-1"></div>
   </div>
 </div>
+
+<!-- Bottom Sheet Overlay -->
+@if(showRateSheet) {
+  <div class="bottom-sheet-backdrop" (click)="closeRateSheet()">
+    <div class="bottom-sheet" (click)="$event.stopPropagation()">
+      <div class="sheet-header">
+        <span class="close-btn" (click)="closeRateSheet()">Cancel</span>
+        <h5>Nhà hàng A</h5>
+      </div>
+
+      <div class="sheet-content">
+        <div class="d-flex justify-content-center align-items-center">OVERALL RATING</div>
+        <div class="d-flex align-items-center justify-content-center">
+          @for(i of [].constructor(totalStars); track i) {
+            <div class="star-wrapper"
+                 (click)="setStar(categoryRatings().length-1,i)"
+                 [ngStyle]="{position:'relative', width:'40px', height:'40px'}">
+              <div [ngStyle]="{
+                    color:isStarActiveUser(i,categoryRatings()[categoryRatings().length-1].rate)?'red':'lightgray',
+                    fontSize:'40px', lineHeight:'1'
+                  }">★</div>
+            </div>
+          }
+        </div>
+
+        @for( ci of firstThreeCategories(); track ci.name;let cii=$index) {
+          <div class="row rating-row">
+            <div class="col-2">{{ci.name}}</div>
+            <div class="col-10">
+              <div class="d-flex align-items-center justify-content-end">
+                @for( si of [].constructor(totalStars); track si) {
+                  <div class="star-wrapper" (click)="setStar(cii, si)">
+                    <div [ngStyle]="{
+                          color:isStarActiveUser(si,ci.rate)?'red':'lightgray'
+                        }">★</div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="review">
+          <span>Describe your experience:</span>
+          <textarea rows="4" cols="60" placeholder=""></textarea>
+        </div>
+      </div>
+
+      <div class="sheet-footer">
+        <button class="btn btn-danger">Submit</button>
+      </div>
+    </div>
+  </div>
+}

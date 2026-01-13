@@ -1,7 +1,241 @@
+@use "sass:color";
+
 :host {
   position: sticky;
   top: 0;
-  z-index: 19 ;
+  z-index: 1000 ;
   background-color: red;
   height: 70px;
 }
+.list-ward{
+position: absolute;
+border-radius: 4px;
+top: 45px;
+
+width: 250px;
+background-color: white;
+z-index: 2;
+border: 1px solid grey;
+height: 250px;
+width:350px;
+overflow-y: scroll;
+}
+.ward-item {
+    color: black;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-left 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.ward-item:hover {
+    background-color: #ffebeb;   
+    border-left: 4px solid red;  
+}
+
+//user
+.bottom-sheet-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  background-color: white;
+  border-radius: 16px;      
+  margin-bottom: 0;
+  overflow: hidden;         
+  display: flex;
+  z-index: 1000;
+  flex-direction: column;   
+}
+
+.sheet-header{
+  position: sticky;
+  top: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: 16px;
+  z-index: 1;
+}
+
+
+.sheet-footer button{
+  min-width: 100px;
+}
+.close-btn{
+  position: absolute;
+  right: 16px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+
+ 
+}
+
+
+.sheet-content {
+  overflow-y: auto;        
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+  flex-grow: 1;           
+}
+
+
+
+
+@media (min-width: 768px) {
+  .bottom-sheet{
+   
+    height:80%;
+    border-radius: 16px ;
+    margin-bottom: 70px;
+  }
+
+
+  
+}
+//login
+.pageLogin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+
+.spacer-30 {
+  height: 30px;
+}
+
+.spacer-20 {
+  height: 20px;
+}
+
+.spacer-50 {
+  height: 50px;
+}
+
+/* Phone input row */
+.phone-row {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+}
+
+/* Phone icon */
+.phone-icon {
+  width: 8vh;
+  height: 8vh;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 4vh;
+    color: #333;
+  }
+}
+
+
+.phone-input {
+  flex: 1;
+  height: 8vh;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    font-size: 16px;
+  }
+}
+
+
+.next-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.next-btn {
+  width: 90%;
+  height: 50px;
+  background: red;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+
+  &:hover {
+     background-color: color.scale(red, $lightness: 20%);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}}
+
+/* Use email */
+.use-email {
+  text-align: center;
+  color: red;
+  cursor: pointer;
+  font-weight: bold;
+
+  
+}
+//Register
+
+.pageRegister {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 24px;
+  box-sizing: border-box;
+}
+
+
+
+/* Input wrapper */
+.input-wrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  input {
+    width: 100%;
+    height: 52px;
+    padding: 0 12px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 0.5px solid #000;
+    border-radius: 4px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: red;
+      box-shadow: 0 0 0 1px rgba(255, 0, 0, 0.3);
+    }
+  }
+}
+
+

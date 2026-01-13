@@ -1,22 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Home } from './home';
-import { provideRouter } from '@angular/router';
+import { NewScroll } from './new-scroll';
 
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
+describe('NewScroll', () => {
+  let component: NewScroll;
+  let fixture: ComponentFixture<NewScroll>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Home],
-       providers: [
-        provideRouter([]) 
-      ]
+      imports: [NewScroll]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Home);
+    fixture = TestBed.createComponent(NewScroll);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,316 @@
+.search-panel {
+  width: 350px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  top: 12px;
+  z-index: 10;
+
+  &.left {
+    left: 12px;
+  }
+
+  &.center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+
+/* Divider */
+.divider-row {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+
+  i {
+    color: #999;
+    margin-right: 6px;
+  }
+
+  .divider {
+    flex: 1;
+    height: 1px;
+    background: #ccc;
+  }
+}
+
+
+.row-search {
+    display: flex;
+    flex-direction: row;
+    margin-top: 6px;
+
+}
+.destination-icon {
+    color: red;
+    font-size: 16px;
+  }
+/* Results */
+.results {
+  margin-top: 8px;
+}
+
+.result-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 0;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  i {
+    color: #e53935;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+
+  .result-text {
+    .name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .address {
+      font-size: 11px;
+      color: #777;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 260px;
+    }
+  }
+}
+.row-start {
+  display: flex;
+  flex-direction: row;
+ 
+}
+
+.start-icon-custom {
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+ margin-top: 4px;
+}
+
+.circle-outer {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgba(26, 115, 232, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-middle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1a73e8;
+}
+
+.start-text {
+ 
+  color: #1a73e8;
+  font-weight: 500;
+  margin-left: 10px;
+
+}
+
+
+//thanh kéo 
+.draggable-panel {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 300px; 
+  background-color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-out;
+  z-index: 10;
+  display: flex;
+ flex-direction: column;
+  &.left-panel {
+  left: 12px;
+
+  max-width: 350px;
+}
+
+
+&.center-panel {
+  left: 0;
+ 
+  max-width: 100%;
+}
+}
+
+.drag-handle {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  cursor: grab;
+}
+
+
+
+.direction-row {
+  display: flex;
+}
+
+.direction-item {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+.icon-box {
+  font-size: 24px;
+}
+
+.underline {
+  height: 2px;
+  background-color: white;
+  margin-top: 4px;
+}
+
+.underline.selected {
+  background-color: red;
+}
+
+//Marker 
+::ng-deep .custom-marker .marker-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+::ng-deep .custom-marker .marker-box {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.26);
+}
+
+::ng-deep .custom-marker .marker-icon {
+  color: red;
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+::ng-deep .custom-marker .marker-text {
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+::ng-deep .custom-marker .marker-arrow {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid white;
+}
+
+//Container nhà hàng
+.restaurant-panel {
+
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+   z-index: 10;
+  .panel-overlay {
+    width: 90%;
+    max-width: 650px;
+  }
+
+  .restaurant-card {
+    background: red;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .restaurant-image {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+
+    .close-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
+
+  .restaurant-name {
+    font-weight: bold;
+    padding: 4px;
+  }
+
+ 
+
+  .restaurant-hours {
+    color: blue;
+    padding: 4px;
+  }
+
+  .tap-to-open {
+    text-align: center;
+    color: black;
+    padding: 4px;
+  }
+}
+
+.star-container{
+    height: 40px;
+    margin-bottom: 20px;
+
+}
+.star-wrapper {
+  width: 40px;
+  height: 40px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.star-wrapper div {
+  font-size: 40px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}

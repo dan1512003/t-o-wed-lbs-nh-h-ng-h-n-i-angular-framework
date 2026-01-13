@@ -1,0 +1,102 @@
+.town-section {
+  padding: 8px 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  color: red;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.see-all {
+  color: #f28b82;
+  cursor: pointer;
+}
+
+
+.image {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  font-weight: bold;
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font-size: 14px;
+}
+.scroll-wrapper {
+  position: relative;
+}
+
+.scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+}
+
+.scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.town-card {
+  min-width: 180px;
+  background-color:red;
+  cursor: pointer;
+}
+
+/* Buttons */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.scroll-btn.left {
+  left: 0;
+}
+
+.scroll-btn.right {
+  right: 0;
+}
+.star-container{
+    height: 40px;
+    margin-bottom: 20px;
+
+}
+.star-wrapper {
+  width: 40px;
+  height: 40px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.star-wrapper div {
+  font-size: 40px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
