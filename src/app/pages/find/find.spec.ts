@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Find } from './find';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('Find', () => {
   let component: Find;
@@ -12,7 +13,21 @@ describe('Find', () => {
       imports: [Find],
 
        providers: [
-        provideRouter([]) 
+        provideRouter([]) ,
+           provideMockStore({
+          initialState: {
+            search: {
+              results: [],
+              loading: false,
+              error: null
+            },
+           restaurantSearch:{
+                resultsRestaurant:[],
+                loading: false,
+                error:  null,
+            }
+          }
+        }),
       ]
     })
     .compileComponents();

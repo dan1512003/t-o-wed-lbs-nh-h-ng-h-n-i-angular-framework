@@ -96,7 +96,7 @@ export class RestaurantModel {
     this.starttime = init.starttime;
   }
 
-  // Factory method giống Dart
+ 
   static fromFeature(feature: any): RestaurantModel {
     const props = feature['properties'] ?? {};
     const geometry = feature['geometry'];

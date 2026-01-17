@@ -15,21 +15,51 @@ export const initialState: SearchState = {
 };
 
 export const searchReducer = createReducer(
+
   initialState,
-  on(search, (state) => ({
-    ...state,
-    loading: true,
-    error: null
-  })),
-  on(searchSuccess, (state, { results }) => ({
-    ...state,
-    results,
-    loading: false
-  })),
-  on(searchFailure, (state, { error }) => ({
-    ...state,
-    results: [],
-    loading: false,
-    error
-  }))
+
+  on(search, (state) => {
+
+    // console.log('   prev state:', state);
+
+    const newState = {
+      ...state,
+      loading: true,
+      error: null
+    };
+
+    console.log('   next state:', newState);
+    return newState;
+  }),
+
+ 
+  on(searchSuccess, (state, { results }) => {
+
+    // console.log('   prev state:', state);
+
+    const newState = {
+      ...state,
+      results,
+      loading: false
+    };
+
+    console.log('   next state:', newState);
+    return newState;
+  }),
+
+
+  on(searchFailure, (state, { error }) => {
+
+    // console.log('   prev state:', state);
+
+    const newState = {
+      ...state,
+      results: [],
+      loading: false,
+      error
+    };
+
+    console.log('   next state:', newState);
+    return newState;
+  })
 );

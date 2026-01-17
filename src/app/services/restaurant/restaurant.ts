@@ -43,23 +43,21 @@ export class Restaurant {
   }
 
  
-  // getRestaurantBound(
-  //   minLon: number,
-  //   minLat: number,
-  //   maxLon: number,
-  //   maxLat: number
-  // ): Observable<any> {
-  //   const url = `${this.baseUrl}/api/restaurantbound`;
+  getRestaurantBound(
+    minLon: number,
+    minLat: number,
+    maxLon: number,
+    maxLat: number
+  ): Observable<any> {
+    const url = `${this.baseUrl}/api/restaurantbound`;
 
-  //   const body = {
-  //     minLon,
-  //     minLat,
-  //     maxLon,
-  //     maxLat,
-  //   };
+    const body = {
+      minLon,
+      minLat,
+      maxLon,
+      maxLat,
+    };
 
-  //   return this.http.post<any>(url, body, {
-  //     headers: this.headers,
-  //   });
-  // }
+    return this.http.post<any>(url, body);
+  }
 }

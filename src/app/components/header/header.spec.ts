@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Header } from './header';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('Header', () => {
   let component: Header;
@@ -11,7 +12,16 @@ describe('Header', () => {
     await TestBed.configureTestingModule({
       imports: [Header],
        providers:[
-          provideRouter([])
+          provideRouter([]),
+            provideMockStore({
+  initialState: {
+    search: {
+      results: [],
+      loading: false,
+      error: null
+    }
+  }
+}),
       ]
     })
     .compileComponents();

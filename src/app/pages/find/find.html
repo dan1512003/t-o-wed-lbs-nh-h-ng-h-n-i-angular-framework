@@ -1,51 +1,90 @@
 <div class="flex-fill w-100">
 
   <!-- Search-->
-  <form (ngSubmit)="onSubmit()" 
+  <form  
         class="d-flex justify-content-center align-items-center gap-3 w-100"
         style="height: 70px; position: sticky; top: 70px; z-index: 9;">
     
     <div class="text-black d-flex justify-content-between" style="width: 90%; height: 40px;">
       
-      <div class="text-black d-flex overflow-hidden align-items-center bg-white"
-           style="border:1px solid grey; border-radius:4px; width: 80%;">
+      <div class="text-black d-flex align-items-center bg-white"
+           style="border:1px solid grey; border-radius:4px; width: 80%; position: relative;">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text"
                name="keyword"
                class="form-control"
+                 [formControl]="searchControl"
                placeholder="Location, Restaurant, or Cuisine"
                style="border: none; box-shadow: none; outline: none;"
-               [value]="keyword()"
-               (input)="onInput($event)">
+              >
+
+              @if(itemsSearch().length !=0){
+      <div class="dropdown-container">
+  @for (item of itemsSearch(); track item.displayName; let i = $index) {
+    <div class="location-item" (click)="findByPick(item)" 
+         [style.border-bottom]="i !== itemsSearch().length - 1 ? '0.5px solid grey' : 'none'">
+
+      <div class="icon">
+        <i class="fas fa-map-marker-alt"></i>
       </div>
 
-      <button type="submit" class="btn btn-danger text-center" style="width:100px;">
+      <div class="text-container">
+        <div class="name">{{ item.name }}</div>
+        <div class="display-name">{{ item.displayName }}</div>
+      </div>
+
+    </div>
+  }
+</div>
+}
+      </div>
+
+      <button  class="btn btn-danger text-center" (click)=" onFind()" style="width:100px;">
         Find
       </button>
 
     </div>
   </form>
 
-  <div class="bg-danger" style="height:50px; position:sticky; top:140px; border-bottom:1px solid grey; z-index: 9;"></div>
+  <div class="bg-danger" style="height:50px; position:sticky; top:140px; border-bottom:1px solid grey; z-index: 8;"></div>
 
   <div class="row g-3 align-items-start w-100 m-0 p-0">
 
     <!-- Restaurant List -->
     @if(!isFullMap()) {
-      <div class="col-10 col-md-6 col-lg-4 col-xl-7 bg-white text-black m-0 p-0" style="height: 1500px;">
-        <div>10 restaurant</div>
-        <div class="bg-danger" (click)="onTap()">
-          <div class="row" style="cursor:pointer;">
-            <div class="col-4" style="height:150px;">
-              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" 
-                   class="img-fluid" style="height:100%; width:100%; object-fit:cover;">
+      <div class="col-10 col-md-6 col-lg-4 col-xl-7 bg-white text-black m-0 p-0" >
+        <div>{{itemsRestaurant().length}}</div>
+        @if(itemsRestaurant().length>0){
+        @for(restaurant of itemsRestaurant();track restaurant.osmId){
+<div (click)="onTap()">
+        <div class="row" style="
+    cursor: pointer;
+    background-color: white;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+">
+            <div class="col-5 col-md-4" style="height:150px;background-color: grey; border-radius: 5px;">
+              @if (restaurant.image) {
+    <img
+      [src]="restaurant.image"
+      class="img-fluid"
+      style="height:100%; width:100%; object-fit:cover;"
+      alt=""
+    />
+  } @else {
+    <div   style="height:100%; width:100%; background-color: grey;"></div>
+  }
             </div>
-            <div class="col-7">
+            <div class="col-7 col-md-8">
+              <div>{{restaurant.name}}</div>
               <div class="d-flex align-items-center justify-content-start">
-                <span class="d-flex align-items-center justify-content-start star-container">4.7</span>
+                <span class="d-flex align-items-center justify-content-start star-container">{{
+getRating(restaurant)
+  }}</span>
 
          
-                @for(i of [].constructor(totalStars); track i) {
+              @for (_ of [].constructor(totalStars); track $index){
                   <div class="d-flex align-items-center justify-content-start star-container">
                     <div class="star-wrapper" [ngStyle]="{
                       position: 'relative',
@@ -71,7 +110,10 @@
                         position: 'absolute',
                         top: '0',
                         left: '0',
-                        width: getStarFill(i) + '%',
+                        width:getStarFill(
+        $index,
+       getRating(restaurant)
+      ) + '%',
                         overflow: 'hidden',
                         whiteSpace: 'nowrap'
                       }">★</div>
@@ -79,9 +121,25 @@
                   </div>
                 }
               </div>
+            <div style="
+    color: blue;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+">{{restaurant.openingHour}}</div>
             </div>
           </div>
         </div>
+
+
+        }
+
+        }@else{
+<div>Không có nhà nào </div>
+
+
+        }
       </div>
     }
 
@@ -118,9 +176,9 @@
               <div class="restaurant-name">{{ restaurant.name }}</div>
 
               <div class="d-flex align-items-center justify-content-start">
-                <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
+                <h4 class="d-flex align-items-center justify-content-start star-container">{{overallrating()}}</h4>
 
-                @for(i of [].constructor(totalStars) ;track i) {
+               @for (_ of [].constructor(totalStars); track $index) {
                   <div class="d-flex align-items-center justify-content-start star-container">
                     <div class="star-wrapper" [ngStyle]="{
                       position: 'relative',
@@ -146,7 +204,7 @@
                         position: 'absolute',
                         top: '0',
                         left: '0',
-                        width: getStarFill(i) + '%',
+                        width: getStarFill($index) + '%',
                         overflow: 'hidden',
                         whiteSpace: 'nowrap'
                       }">★</div>

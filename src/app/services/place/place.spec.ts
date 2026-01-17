@@ -75,12 +75,10 @@ describe('Place', () => {
       expect(res.features[0].properties.name).toBe('Tokachiya Ramen');
     });
 
-    const req = httpMock.expectOne((request) => 
-      request.url === 'https://nominatim.openstreetmap.org/search' &&
-      request.params.get('q') === query &&
-      request.params.get('format') === 'geojson' &&
-      request.params.get('countrycodes') === 'vn'
-    );
+    const req = httpMock.expectOne(req =>
+  req.url === 'http://localhost:3000/api/search' &&
+  req.params.get('q') === 'Tokachiya Ramen'
+);
 
     expect(req.request.method).toBe('GET');
     req.flush(mockSearchResponse);
@@ -120,10 +118,9 @@ describe('Place', () => {
     });
 
     const req = httpMock.expectOne((request) => 
-      request.url === 'https://nominatim.openstreetmap.org/reverse' &&
+      request.url === 'http://localhost:3000/api/reverse' &&
       request.params.get('lat') === lat.toString() &&
-      request.params.get('lon') === lon.toString() &&
-      request.params.get('format') === 'jsonv2'
+      request.params.get('lon') === lon.toString() 
     );
 
     expect(req.request.method).toBe('GET');
@@ -139,7 +136,7 @@ describe('Place', () => {
     });
 
     const req = httpMock.expectOne((request) =>
-      request.url === 'https://nominatim.openstreetmap.org/reverse'
+      request.url === 'http://localhost:3000/api/reverse'
     );
 
     req.flush(mockLatLonResponse, { status: 200, statusText: 'OK' });

@@ -123,7 +123,7 @@ style="height: 500px; position: relative;z-index: 1;"
         <div class="d-flex align-items-center justify-content-start">
           <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
 
-          @for ( i of [].constructor(totalStars); track i) {
+         @for (_ of [].constructor(totalStars); track $index) {
             <div class="d-flex align-items-center justify-content-start star-container">
               <div class="star-wrapper" [ngStyle]="{
                 'position': 'relative',
@@ -149,7 +149,7 @@ style="height: 500px; position: relative;z-index: 1;"
                   position: 'absolute',
                   top: '0',
                   left: '0',
-                  width: getStarFill(i) + '%',
+                  width: getStarFill($index) + '%',
                   overflow: 'hidden',
                   whiteSpace: 'nowrap'
                 }">★</div>

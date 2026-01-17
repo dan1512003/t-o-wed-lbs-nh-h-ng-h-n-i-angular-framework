@@ -1,14 +1,16 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { SearchState } from './search.reducer';
+import { RestaurantSearchState } from './restaurant.reducer';
 
-export const selectSearchState = createFeatureSelector<SearchState>('search');
+
+export const selectSearchState = createFeatureSelector<RestaurantSearchState>('restaurantSearch');
+
 
 export const selectResults = createSelector(
   selectSearchState,
   (state) => {
-
-    // console.log('   state.results:', state?.results);
-    return state.results;
+   
+   
+    return state.resultsRestaurant;
   }
 );
 
@@ -16,8 +18,7 @@ export const selectResults = createSelector(
 export const selectLoading = createSelector(
   selectSearchState,
   (state) => {
-  
-    // console.log('   state.loading:', state?.loading);
+   
     return state.loading;
   }
 );
@@ -27,7 +28,7 @@ export const selectError = createSelector(
   selectSearchState,
   (state) => {
 
-    // console.log('   state.error:', state?.error);
+
     return state.error;
   }
 );

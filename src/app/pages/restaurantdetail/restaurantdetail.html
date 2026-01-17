@@ -73,7 +73,7 @@
             <div class="d-flex align-items-center justify-content-start">
               <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
               
-              @for( i of [].constructor(totalStars) ;track i) {
+             @for (_ of [].constructor(totalStars); track $index) {
                 <div class="star-wrapper" 
                      [ngStyle]="{
                        position:'relative', width:'25px', height:'30px', display:'flex'
@@ -85,14 +85,14 @@
                   <div [ngStyle]="{
                         color:'red', fontSize:'30px', lineHeight:'1',
                         position:'absolute', top:'0', left:'0',
-                        width:getStarFill(i)+'%', overflow:'hidden', whiteSpace:'nowrap'
+                        width:getStarFill($index)+'%', overflow:'hidden', whiteSpace:'nowrap'
                       }">★</div>
                 </div>
               }
             </div>
 
             <div class="row">
-              @for( item of ratings ;track item.score) {
+              @for( item of ratings ;track $index) {
                 <div class="col-3 d-flex flex-column justify-content-start"
                      [ngStyle]="{'border-right': item === ratings[ratings.length-1] ? 'none' : '1px solid grey'}">
                   <h5 class="ms-1">{{item.score}}</h5>
@@ -123,11 +123,11 @@
           </div>
 
           <div class="d-flex align-items-center justify-content-start">
-            @for(i of [].constructor(totalStars); track i) {
+           @for (_ of [].constructor(totalStars); track $index){
               <div class="star-wrapper"
                    [ngStyle]="{position:'relative', width:'13px', height:'15px'}">
                 <div [ngStyle]="{
-                      color:isStarActive(i,3)?'red':'lightgray',
+                      color:isStarActive($index,3)?'red':'lightgray',
                       fontSize:'15px', lineHeight:'1'
                     }">★</div>
               </div>
@@ -169,12 +169,12 @@
       <div class="sheet-content">
         <div class="d-flex justify-content-center align-items-center">OVERALL RATING</div>
         <div class="d-flex align-items-center justify-content-center">
-          @for(i of [].constructor(totalStars); track i) {
+         @for (_ of [].constructor(totalStars); track $index) {
             <div class="star-wrapper"
-                 (click)="setStar(categoryRatings().length-1,i)"
+                 (click)="setStar(categoryRatings().length-1,$index)"
                  [ngStyle]="{position:'relative', width:'40px', height:'40px'}">
               <div [ngStyle]="{
-                    color:isStarActiveUser(i,categoryRatings()[categoryRatings().length-1].rate)?'red':'lightgray',
+                    color:isStarActiveUser($index,categoryRatings()[categoryRatings().length-1].rate)?'red':'lightgray',
                     fontSize:'40px', lineHeight:'1'
                   }">★</div>
             </div>

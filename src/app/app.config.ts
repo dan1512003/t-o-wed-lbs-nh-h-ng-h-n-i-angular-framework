@@ -5,13 +5,23 @@ import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-
+import { searchReducer } from './store/search/search.reducer';
+import { SearchEffects } from './store/search/search.effects';
+import { provideHttpClient,withFetch } from '@angular/common/http';
+import { RestaurantEffects } from './store/restaurant/restaurant.effects';
+import { restaurantSearchReducer } from './store/restaurant/restaurant.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
-    provideStore(),
-    provideEffects()
+    provideStore({
+      search: searchReducer,
+      restaurantSearch:restaurantSearchReducer
+      
+}),
+    provideEffects([SearchEffects,RestaurantEffects]),
+    provideHttpClient( withFetch()),
+    
 ]
 };

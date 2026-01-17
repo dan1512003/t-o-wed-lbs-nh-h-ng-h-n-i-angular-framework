@@ -161,9 +161,7 @@ WHERE osm_id = $1
   }
 };
 
-/**
- * POST /api/restaurants/bounds
- */
+
 exports.getRestaurantsBound = async (req, res) => {
   try {
     const { minLon, minLat, maxLon, maxLat } = req.body;

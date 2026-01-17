@@ -1,21 +1,42 @@
 <div class="flex-fill w-100">
-  <form (ngSubmit)="onSubmit()" class="d-flex justify-content-center gap-3 mt-2">
+  <form (ngSubmit)="onSubmit()" class="d-flex justify-content-center gap-3 mt-2" >
     
 
-    <div class="text-black d-flex justify-content-between" style="width: 90%;">
-      <div class="text-black d-flex overflow-hidden align-items-center"
-           style="border:1px solid grey; border-radius:4px; width:80%;">
+    <div class="text-black d-flex justify-content-between" style="width: 90%; ">
+      <div class="text-black d-flex  align-items-center"
+           style="border:1px solid grey; border-radius:4px; width:80%;position: relative;">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text"
              
                name="keyword"
                class="form-control"
+                [formControl]="searchControl"
                   placeholder="Location, Restaurant, or Cuisine"
                style="border: none; box-shadow: none; outline: none;"
-               [value]="keyword()"
+             
             
-               (input)="onInput($event)"
                >
+@if(items().length !=0){
+      <div class="dropdown-container">
+  @for (item of items(); track item.displayName; let i = $index) {
+    <div class="location-item" (click)="findByPick(item)" 
+         [style.border-bottom]="i !== items().length - 1 ? '0.5px solid grey' : 'none'">
+
+      <div class="icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+
+      <div class="text-container">
+        <div class="name">{{ item.name }}</div>
+        <div class="display-name">{{ item.displayName }}</div>
+      </div>
+
+    </div>
+  }
+</div>
+}
+         
+
       </div>
       <button type="submit" class="btn btn-danger text-center" style="width:100px;">
         Find
@@ -23,7 +44,7 @@
     </div>
   </form>
 
- 
+
   <div style="background-image: url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=80');
               background-size: cover; background-position: center;
               background-repeat: no-repeat; height: 400px; margin-top:20px;">

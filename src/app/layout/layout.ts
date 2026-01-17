@@ -13,9 +13,13 @@ import { Footer } from '../components/footer/footer';
 export class Layout {
    isSticky = signal(false);
    keyword = signal('');
-     isScrolling =  signal(false);
-
+   isScrolling =  signal(false);
+    hasSearched = signal(false);
   onActivate(event: any) {
+    if (event.hasSearched) {
+
+   event.hasSearched =this.hasSearched;
+    }
 if (event.isScrolling && event.isScrollingChange) {
      
        event.isScrolling=this.isScrolling;
@@ -48,5 +52,8 @@ if (event.isScrolling && event.isScrollingChange) {
 onScrollingChange(value: boolean) {
   console.log('Con đang scroll:', value);
   this.isScrolling.set(value); 
+}
+onhasSearch(value:boolean){
+this.hasSearched.set(value)
 }
 }

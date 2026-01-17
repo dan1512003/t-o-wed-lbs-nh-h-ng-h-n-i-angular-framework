@@ -42,38 +42,7 @@ export class Wardrestaurant {
       ward: { name: 'Ba Đình', image: '', osmId: 2 },
       count: 21
     },
-    {
-      ward: { name: 'Hoàn Kiếm', image: '', osmId: 1 },
-      count: 34
-    },
-    {
-      ward: { name: 'Ba Đình', image: '', osmId: 2 },
-      count: 21
-    },
-    {
-      ward: { name: 'Hoàn Kiếm', image: '', osmId: 1 },
-      count: 34
-    },
-    {
-      ward: { name: 'Ba Đình', image: '', osmId: 2 },
-      count: 21
-    },
-    {
-      ward: { name: 'Hoàn Kiếm', image: '', osmId: 1 },
-      count: 34
-    },
-    {
-      ward: { name: 'Ba Đình', image: '', osmId: 2 },
-      count: 21
-    },
-    {
-      ward: { name: 'Hoàn Kiếm', image: '', osmId: 1 },
-      count: 34
-    },
-    {
-      ward: { name: 'Ba Đình', image: '', osmId: 2 },
-      count: 21
-    },
+    
   ];
 constructor(private router: Router) {
   

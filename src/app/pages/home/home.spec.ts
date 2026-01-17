@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Home } from './home';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('Home', () => {
   let component: Home;
@@ -11,7 +12,16 @@ describe('Home', () => {
     await TestBed.configureTestingModule({
       imports: [Home],
        providers: [
-        provideRouter([]) 
+        provideRouter([]),
+      provideMockStore({
+  initialState: {
+    search: {
+      results: [],
+      loading: false,
+      error: null
+    }
+  }
+}),
       ]
     })
     .compileComponents();

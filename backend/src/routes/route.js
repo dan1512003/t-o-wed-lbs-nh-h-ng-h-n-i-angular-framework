@@ -5,6 +5,7 @@ const wardController = require("../controllers/ward_controller");
 const reviewController = require("../controllers/review_controller");
 const userController = require("../controllers/user_controller");
 const dietController =require("../controllers/diet_controller");
+const placeController=require("../controllers/place_controller");
 //restaurant controller
 router.get("/restaurant", restaurantController.getRestaurants);
 router.get("/restaurantid", restaurantController.getRestaurantsID);
@@ -30,5 +31,10 @@ router.post('/checktoken', userController.decodeToken);
 
 //diet controller
  router.get('/diet', dietController.getDiet);
+
+
+ //place controller
+ router.get('/search', placeController.searchPlace);
+router.get('/reverse', placeController.getAddressFromLatLon);
 module.exports = router;
 

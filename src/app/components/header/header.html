@@ -143,19 +143,41 @@
       <div class="d-flex justify-content-center gap-3">
         <div class="text-black d-flex justify-content-between" style="width: 90%;">
           <div
-            class="text-black d-flex overflow-hidden align-items-center"
-            style="border:1px solid grey; border-radius:4px; width:80%;"
+            class="text-black d-flex align-items-center"
+            style="border:1px solid grey; border-radius:4px; width:80%;position: relative;"
           >
             <i class="fa-solid fa-magnifying-glass"></i>
             <input
               type="text"
               name="keyword"
+               [formControl]="searchControl"
               class="form-control"
-              [value]="keyword()"
+             
               placeholder="Location, Restaurant, or Cuisine"
               style="border: none; box-shadow: none; outline: none;"
-              (input)="onInput($event)"
+         
             />
+             @if(items().length !=0){
+               <div class="dropdown-container">
+  @for (item of items(); track item.displayName; let i = $index) {
+    <div class="location-item" (click)="findByPick(item)" 
+         [style.border-bottom]="i !== items().length - 1 ? '0.5px solid grey' : 'none'">
+
+      <div class="icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+
+      <div class="text-container">
+        <div class="name">{{ item.name }}</div>
+        <div class="display-name">{{ item.displayName }}</div>
+      </div>
+
+    </div>
+  }
+</div>
+
+             }
+
           </div>
 
           <button type="submit" class="btn btn-danger text-center" style="width:100px;">
