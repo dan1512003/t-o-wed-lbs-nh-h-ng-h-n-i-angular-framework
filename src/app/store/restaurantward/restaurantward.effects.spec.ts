@@ -38,6 +38,10 @@ describe('ShowsEffects', () => {
   });
   beforeEach(() => {
     spyOn(Date, 'now').and.returnValue( new Date(2025, 0, 1, 12, 0, 0).getTime());
+    spyOn(Intl, 'DateTimeFormat').and.returnValue({
+  format: () => 'Mon'
+} as any);
+
     TestBed.configureTestingModule({
       providers: [
        RestaurantWardEffects,
@@ -245,7 +249,7 @@ describe('restaurantAvail$', () => {
                 "delivery": null,
                 "description": null,
                 "phone": "+84438257338",
-                "opening_hour": "Mo-Su 06:00-22:00",
+                "opening_hour": "24/7",
                 "cuisine": "vietnamese",
                 "website": "http://www.pho10lyquocsu.com.vn",
                 "addr_street": "Phố Lý Quốc Sư",
