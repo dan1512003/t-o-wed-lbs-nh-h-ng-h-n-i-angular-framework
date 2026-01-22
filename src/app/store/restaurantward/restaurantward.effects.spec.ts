@@ -769,7 +769,7 @@ describe('restaurantAvail$', () => {
 
   });
 //test  effect restaurant new
-describe('restaurantAvail$', () => {
+describe('restaurantNew$', () => {
     const mockApiByIdWardResponse ={
     "type": "FeatureCollection",
     "features": [
