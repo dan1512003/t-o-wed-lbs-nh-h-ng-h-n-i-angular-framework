@@ -246,7 +246,7 @@ describe('restaurantAvail$', () => {
                 "delivery": null,
                 "description": null,
                 "phone": "+84438257338",
-                "opening_hour": "Mo-Su 06:00-22:00",
+                "opening_hour": "24/7",
                 "cuisine": "vietnamese",
                 "website": "http://www.pho10lyquocsu.com.vn",
                 "addr_street": "Phố Lý Quốc Sư",
