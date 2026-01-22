@@ -205,6 +205,16 @@ describe('loadRestaurantByWard$', () => {
   });
 //test restaurantAvail Effect 
 describe('restaurantAvail$', () => {
+   const fixedTime = new Date(2025, 0, 1, 12, 0, 0).getTime();
+
+  beforeEach(() => {
+    spyOn(Date, 'now').and.returnValue(fixedTime);
+  });
+
+  afterEach(() => {
+    (Date.now as jasmine.Spy).and.callThrough();
+  });
+
     const mockApiByIdWardResponse ={
     "type": "FeatureCollection",
     "features": [
@@ -269,7 +279,7 @@ describe('restaurantAvail$', () => {
 
    
       testScheduler.run(({ hot, cold, expectObservable }) => {
-        actions = hot('-a', { a: loadRestaurantAvail({osmId:""}) });
+        actions = hot('-a', { a: loadRestaurantAvail({osmId:"773601261"}) });
 
     
         const restaurantByIdWardResponse = cold('--y|', { y: mockApiByIdWardResponse });
