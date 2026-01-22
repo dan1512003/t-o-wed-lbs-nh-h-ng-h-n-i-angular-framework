@@ -52,7 +52,7 @@ exports.checkemail = async (req, res) => {
   try {
     const { email, phone } = req.body;
 
-    const sql = !phone
+    const sql = (!phone || phone=="")
       ? `
         SELECT json_agg(
           json_build_object(
@@ -84,11 +84,30 @@ exports.checkemail = async (req, res) => {
 
     const users = result.rows[0]?.user ?? [];
 
-    if (users.length === 0) return res.json({ token: '' });
+    
+    if (users.length === 0) {
+      return res.status(401).json({ message: 'User not found' });
+    }
 
+    
     const user = User.fromJson(users[0]);
+
+  
     const token = createToken(user);
-    res.json({ token });
+
+    
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: false,              
+      sameSite: 'Lax',         
+      maxAge:30 * 24 * 60 * 60 * 1000   
+    });
+
+  
+    return res.json({
+      user
+    });
+
   } catch (err) {
     console.error('checkemail error:', err.message);
     res.status(500).json({ error: err.message });
@@ -98,7 +117,7 @@ exports.checkemail = async (req, res) => {
 
 exports.decodeToken = async (req, res) => {
   try {
-    const { token } = req.body;
+    const token = req.cookies?.access_token;
     const user = decodeTokenFunc(token);
     res.json(user ? user.toJson() : null);
   } catch (err) {
@@ -121,17 +140,29 @@ exports.saveUser = async (req, res) => {
 
     const result = await pool.query(sql, [email, phone, fullname]);
 
-    if (!result.rows.length) return res.json({ token: '' });
+    if (!result.rows.length) {
+      return res.status(400).json({ message: "Create user failed" });
+    }
 
     const user = User.fromJson(result.rows[0]);
     const token = createToken(user);
-    res.json({ token });
+
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: false,          
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+
+   
+    return res.json({ user });
+
   } catch (err) {
-    console.error('saveUser error:', err.message);
+    console.error("saveUser error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
-
 
 exports.updateUser = async (req, res) => {
   try {
@@ -146,18 +177,36 @@ exports.updateUser = async (req, res) => {
       RETURNING email, name, phone, image
     `;
 
-    const result = await pool.query(sql, [email, phone, fullname, oldEmail]);
+    const result = await pool.query(sql, [
+      email,
+      phone,
+      fullname,
+      oldEmail
+    ]);
 
-    if (!result.rows.length) return res.json({ token: '' });
+    if (!result.rows.length) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const user = User.fromJson(result.rows[0]);
     const token = createToken(user);
-    res.json({ token });
+
+   
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+
+    return res.json({ user });
+
   } catch (err) {
-    console.error('updateUser error:', err.message);
+    console.error("updateUser error:", err.message);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 exports.getUser = async (req, res) => {

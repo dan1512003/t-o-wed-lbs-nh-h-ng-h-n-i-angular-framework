@@ -27,12 +27,12 @@
                  <!-- ward -->
  @if (showWard()) {
   <div class="list-ward">
-    @for (item of wards; track item) {
+    @for (item of wards(); track item) {
       <div
         class="d-flex justify-content-between ward-item"
-        (click)="selectWard(item, $event)"
+        (click)="selectWard(item.ward, $event)"
       >
-        <span>{{ item.ward }}</span>
+        <span>{{ item.ward.name }}</span>
         <span>{{ item.count }}</span>
       </div>
     }

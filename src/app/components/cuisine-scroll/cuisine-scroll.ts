@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, signal, ViewChild,ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { DietModel } from '../../model/diet/diet.model';
 
 @Component({
   selector: 'app-cuisine-scroll',
@@ -11,8 +12,8 @@ import { Router } from '@angular/router';
 export class CuisineScroll {
 
   
- cuisines=  input<any[]>([]);
-
+  cuisines=  input<DietModel[]>([]);
+   osmId=input<string>('');
   itemCount = 10;
   scrollAmount = 200;
 
@@ -21,16 +22,17 @@ export class CuisineScroll {
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 
-  private resizeObserver!: ResizeObserver;
+
 
   constructor(private router: Router) {
  
   }
 
-  ngAfterViewInit() {
-  this.checkScroll()
+  ngAfterViewChecked() {
 
-  }
+    this.checkScroll();
+
+}
 
 
   checkScroll() {
@@ -47,8 +49,15 @@ export class CuisineScroll {
     this.scrollContainer.nativeElement.scrollBy({ left: this.scrollAmount, behavior: 'smooth' });
   }
 
-  goToCuisine() {
-    
+  goToCuisine(cuisine:string) {
+    console.log('osmid',this.osmId())
+      this.router.navigate(['/viewall'], {
+      queryParams: {
+        keyword: this.osmId(),
+        title:"restaurantcuisine",
+        cuisine:cuisine
+      }
+    });
   }
-  goToAll(){}
+
 }

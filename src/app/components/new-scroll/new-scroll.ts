@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, ViewChild ,ElementRef, signal} from '@angular/core';
+import { RestaurantModel } from '../../model/restaurant/restaurant.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-scroll',
@@ -9,28 +11,48 @@ import { Component, input, ViewChild ,ElementRef, signal} from '@angular/core';
 })
 export class NewScroll {
   itemCount:number = 5;
-  wards = input<any[]>([]);
-   totalStars :number = 5;
-  overallrating : number = 4.2; 
-   starIndexes = Array.from({ length: this.totalStars }, (_, i) => i);
+  wards = input<RestaurantModel[]>([]);
+  osmId=input<string>('');
+  totalStars :number = 5;
+  overallrating  = signal<number>(0);
+  starIndexes = Array.from({ length: this.totalStars }, (_, i) => i);
   canScrollLeft=signal<boolean>(false);
   canScrollRight= signal<boolean>(false);
   scrollAmount:number = 300;
- ngAfterViewInit() {
-  this.checkScroll();
+
+    constructor(private router: Router) {
+
+    
+  }
+//  ngAfterViewInit() {
+//   this.checkScroll();
+// }
+
+ngAfterViewChecked() {
+
+    this.checkScroll();
+
 }
  @ViewChild('scrollContainer', { static: false })
   scrollContainer!: ElementRef<HTMLDivElement>;
 
- getStarFill(index: number): number {
-  const fullStars = Math.floor(this.overallrating);
-  const fraction = this.overallrating - fullStars;
+ getStarFill(index: number, overRating?: number): number {
+  const rating = overRating ?? this.overallrating();
 
-  if (index < fullStars) return 100;        
-  if (index === fullStars) return fraction * 100; 
-  return 0;                                  
+  const fullStars = Math.floor(rating);
+  const fraction = rating - fullStars;
+
+  if (index < fullStars) return 100;
+  if (index === fullStars) return fraction * 100;
+  return 0;
 }
+ getRating(restaurant: RestaurantModel): number {
+  if (!restaurant.reviewCount) return 0;
 
+  return Number(
+    (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
+  );
+}
   scrollLeft() {
     this.scrollContainer.nativeElement.scrollBy({
       left: -this.scrollAmount,
@@ -55,6 +77,13 @@ checkScroll() {
     console.log(item);
   }
    goToAll() {
-    console.log('SEE ALL');
+    console.log('osmid',this.osmId())
+      this.router.navigate(['/viewall'], {
+      queryParams: {
+        keyword: this.osmId(),
+        title:"restaurantnew"
+      }
+    });
+   
   }
 }

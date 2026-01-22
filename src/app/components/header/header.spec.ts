@@ -19,9 +19,19 @@ describe('Header', () => {
       results: [],
       loading: false,
       error: null
-    }
+    },
+    restaurantWard: {
+      restaurantward: { data: [], loading: false, error: null },
+      restaurantAvail: { data: [], loading: false, error: null },
+      restaurantHighRate: { data: [], loading: false, error: null },
+      restaurantNew: { data: [], loading: false, error: null },
+      cuisine: { data: [], loading: false, error: null },
+      restaurantCusine: { data: [], loading: false, error: null }
+    },
   }
+  
 }),
+
       ]
     })
     .compileComponents();

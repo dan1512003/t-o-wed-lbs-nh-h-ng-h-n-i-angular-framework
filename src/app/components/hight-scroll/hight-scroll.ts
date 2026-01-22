@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, ViewChild ,ElementRef, signal} from '@angular/core';
+import { RestaurantModel } from '../../model/restaurant/restaurant.model';
 
 @Component({
   selector: 'app-hight-scroll',
@@ -9,28 +10,40 @@ import { Component, input, ViewChild ,ElementRef, signal} from '@angular/core';
 })
 export class HightScroll {
   itemCount:number = 5;
-  wards = input<any[]>([]);
+  wards = input<RestaurantModel[]>([]);
+    osmId=input<string>('');
   totalStars :number = 5;
   starIndexes = Array.from({ length: this.totalStars }, (_, i) => i);
 
-  overallrating : number = 4.2; 
+ overallrating  = signal<number>(0);
   canScrollLeft =  signal<boolean> (false);
   canScrollRight = signal<boolean> (false);
   scrollAmount:number = 300;
- ngAfterViewInit() {
-  this.checkScroll();
+ngAfterViewChecked() {
+
+    this.checkScroll();
+
 }
  @ViewChild('scrollContainer', { static: false })
   scrollContainer!: ElementRef<HTMLDivElement>;
 
  
- getStarFill(index: number): number {
-  const fullStars = Math.floor(this.overallrating);
-  const fraction = this.overallrating - fullStars;
+  getStarFill(index: number, overRating?: number): number {
+  const rating = overRating ?? this.overallrating();
 
-  if (index < fullStars) return 100;        
-  if (index === fullStars) return fraction * 100; 
-  return 0;                                  
+  const fullStars = Math.floor(rating);
+  const fraction = rating - fullStars;
+
+  if (index < fullStars) return 100;
+  if (index === fullStars) return fraction * 100;
+  return 0;
+}
+ getRating(restaurant: RestaurantModel): number {
+  if (!restaurant.reviewCount) return 0;
+
+  return Number(
+    (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
+  );
 }
   scrollLeft() {
     this.scrollContainer.nativeElement.scrollBy({

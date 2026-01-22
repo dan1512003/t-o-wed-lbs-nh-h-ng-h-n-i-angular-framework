@@ -18,12 +18,13 @@ import { selectResults } from '../../store/search/search.selectors';
 export class Home {
 
   keyword = input<string>('');  
-  hasSearched = input<boolean>();  
+  hasSearched = input<boolean>(); 
+  isSearch =signal<boolean>(false); 
   keywordChange = output<string>();
   items = signal<NominatimPlace[]>([]);
   results = this.store.selectSignal(selectResults);
   searchControl = new FormControl('');
-  isSearch =signal<boolean>(false);
+  
   constructor(private router: Router,private store:Store<AppState>) {
     effect(() => {
 if(!this.isSearch())return;

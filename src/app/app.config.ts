@@ -10,6 +10,8 @@ import { SearchEffects } from './store/search/search.effects';
 import { provideHttpClient,withFetch } from '@angular/common/http';
 import { RestaurantEffects } from './store/restaurant/restaurant.effects';
 import { restaurantSearchReducer } from './store/restaurant/restaurant.reducer';
+import { restaurantWardReducer } from './store/restaurantward/restaurantward.reducer';
+import { RestaurantWardEffects } from './store/restaurantward/restaurantward.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -17,10 +19,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), provideClientHydration(withEventReplay()),
     provideStore({
       search: searchReducer,
-      restaurantSearch:restaurantSearchReducer
+      restaurantSearch:restaurantSearchReducer,
+      restaurantWard:restaurantWardReducer,
       
 }),
-    provideEffects([SearchEffects,RestaurantEffects]),
+    provideEffects([SearchEffects,RestaurantEffects,RestaurantWardEffects]),
     provideHttpClient( withFetch()),
     
 ]

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, input, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { RestaurantModel } from '../../model/restaurant/restaurant.model';
 
 @Component({
   selector: 'app-town-scroll',
@@ -11,9 +12,10 @@ import { Router } from '@angular/router';
 export class TownScroll{
   
   itemCount = 5;
-  wards = input<any[]>([]);
+  wards = input<RestaurantModel[]>([]);
+  osmId=input<string>('');
   totalStars :number = 5;
-  overallrating : number = 4.2; 
+ overallrating  = signal<number>(0);
   canScrollLeft = signal(false);
   canScrollRight = signal(false);
   starIndexes = Array.from({ length: this.totalStars }, (_, i) => i);
@@ -32,27 +34,42 @@ export class TownScroll{
 
   ngAfterViewInit() {
    
-      this.checkScroll();
+      // this.checkScroll();
   
 
     
   }
+ngAfterViewChecked() {
 
- getStarFill(index: number): number {
-  const fullStars = Math.floor(this.overallrating);
-  const fraction = this.overallrating - fullStars;
+    this.checkScroll();
 
-  if (index < fullStars) return 100;        
-  if (index === fullStars) return fraction * 100; 
-  return 0;                                  
+}
+getStarFill(index: number, overRating?: number): number {
+  const rating = overRating ?? this.overallrating();
+
+  const fullStars = Math.floor(rating);
+  const fraction = rating - fullStars;
+
+  if (index < fullStars) return 100;
+  if (index === fullStars) return fraction * 100;
+  return 0;
+}
+ getRating(restaurant: RestaurantModel): number {
+  if (!restaurant.reviewCount) return 0;
+
+  return Number(
+    (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
+  );
 }
   checkScroll() {
+    console.log("checkScroll")
     const el = this.scrollContainer.nativeElement;
 
     this.canScrollLeft.set(el.scrollLeft > 0);
     this.canScrollRight.set(
       el.scrollLeft + el.clientWidth < el.scrollWidth
     );
+    console.log("checkScroll Right",  el.scrollLeft + el.clientWidth < el.scrollWidth)
   }
 
   scrollLeft() {
@@ -74,6 +91,13 @@ export class TownScroll{
   }
 
   goToAll() {
-    this.router.navigate(['/viewall']);
+    console.log('osmid',this.osmId())
+      this.router.navigate(['/viewall'], {
+      queryParams: {
+        keyword: this.osmId(),
+        title:"restaurantavail"
+      }
+    });
+   
   }
 }

@@ -155,6 +155,15 @@ getStarFill(index: number, overRating?: number): number {
   if (index === fullStars) return fraction * 100;
   return 0;
 }
+ getRating(restaurant: RestaurantModel): number {
+  if (!restaurant.reviewCount) return 0;
+
+  return Number(
+    (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
+  );
+}
+
+
   ngOnDestroy() {
     this.stickyChange.emit(false);
   }
@@ -183,13 +192,6 @@ getStarFill(index: number, overRating?: number): number {
   toggleMap() {
   this.isClickMarker.set(false);
   this.isFullMap.set (!this.isFullMap());
-}
- getRating(restaurant: RestaurantModel): number {
-  if (!restaurant.reviewCount) return 0;
-
-  return Number(
-    (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
-  );
 }
 
 

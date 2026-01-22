@@ -3,8 +3,8 @@
     
 
     <div class="text-black d-flex justify-content-between" style="width: 90%;">
-      <div class="text-black d-flex overflow-hidden align-items-center"
-           style="border:1px solid grey; border-radius:4px; width:80%;">
+      <div class="text-black d-flex  align-items-center"
+           style="border:1px solid grey; border-radius:4px; width:80%;position: relative;">
         <i class="fa-solid fa-magnifying-glass"></i>
         <input type="text"
              
@@ -12,10 +12,30 @@
                class="form-control"
                   placeholder="Location, Restaurant, or Cuisine"
                style="border: none; box-shadow: none; outline: none;"
-               [value]="keyword()"
-            
-               (input)="onInput($event)"
+             [formControl]="searchControl"
                >
+
+               @if(items().length !=0){
+      <div class="dropdown-container">
+  @for (item of items(); track item.displayName; let i = $index) {
+    <div class="location-item" (click)="findByPick(item)" 
+         [style.border-bottom]="i !== items().length - 1 ? '0.5px solid grey' : 'none'">
+
+      <div class="icon">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+
+      <div class="text-container">
+        <div class="name">{{ item.name }}</div>
+        <div class="display-name">{{ item.displayName }}</div>
+      </div>
+
+    </div>
+  }
+</div>
+}
+         
+
       </div>
       <button type="submit" class="btn btn-danger text-center" style="width:100px;">
         Find
@@ -23,10 +43,20 @@
     </div>
   </form>
 
-<app-town-scroll [wards]="wards"></app-town-scroll>
-<app-hight-scroll [wards]="wards"></app-hight-scroll>
-<app-new-scroll [wards]="wards"></app-new-scroll>
- <app-cuisine-scroll [cuisines]="cuisines"></app-cuisine-scroll>
+@if(wardsavail().length !=0){
+<app-town-scroll [osmId]="osmId()" [wards]="wardsavail()"></app-town-scroll>
+}
+@if(wardshightrate().length !=0){
+<app-hight-scroll [osmId]="osmId()" [wards]="wardshightrate()"></app-hight-scroll>
+}
+@if(wardsnew().length !=0){
+<app-new-scroll [osmId]="osmId()" [wards]="wardsnew()"></app-new-scroll>
+}
+
+@if(wardcuisine().length !=0){
+<app-cuisine-scroll [osmId]="osmId()" [cuisines]="wardcuisine()"></app-cuisine-scroll>
+}
+ 
  
 </div>
 

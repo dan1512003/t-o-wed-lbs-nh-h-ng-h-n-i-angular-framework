@@ -3,9 +3,6 @@
   <div class="header">
     <h3>Cuisine</h3>
 
-    @if (cuisines().length > itemCount) {
-      <span class="see-all" (click)="goToAll()">SEE ALL</span>
-    }
   </div>
 
   <div class="scroll-wrapper">
@@ -13,11 +10,22 @@
     <div #scrollContainer class="scroll-row" (scroll)="checkScroll()">
 
       @for (item of cuisines(); track item.diet) {
-        <div class="cuisine-card" (click)="goToCuisine()">
+        <div class="cuisine-card" (click)="goToCuisine(item.diet)">
           <div
             class="cuisine-image"
-            [style.backgroundImage]="'url(' + (item.image || 'https://via.placeholder.com/150') + ')'"
-          ></div>
+    
+          >
+                   @if (item.image) {
+    <img
+      [src]="item.image"
+      class="img-fluid"
+      style="height:100%; width:100%; object-fit:cover; border-radius: 50%;"
+      alt=""
+    />
+  } @else {
+    <div   style="height:100%; width:100%; background-color: grey;"></div>
+  }
+        </div>
           <div class="cuisine-title">{{ item.diet }}</div>
         </div>
       }

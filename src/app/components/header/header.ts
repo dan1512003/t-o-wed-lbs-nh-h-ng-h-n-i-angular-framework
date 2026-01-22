@@ -8,6 +8,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { search } from '../../store/search/search.actions';
+import { loadRestaurantByWard, WardRestaurantCount } from '../../store/restaurantward/restaurantward.actions';
+import { selectRestaurantWardData, selectRestaurantWardLoading } from '../../store/restaurantward/restaurantward.selectors';
+import { WardModel } from '../../model/ward/ward.model';
 interface RegisterFormData {
   firstName: string;
   lastName: string;
@@ -37,12 +40,9 @@ export class Header {
   selectedWard:string = 'Hoàn Kiếm';
   phoneNumber:string = '';
   email:string='';
-  wards :{ward:string,count:number}[] = [
-    { ward: 'Hoàn Kiếm', count: 34 },
-    { ward: 'Ba Đình', count: 21 },
-    { ward: 'Đống Đa', count: 45 },
-    { ward: 'Hai Bà Trưng', count: 18 }
-  ];
+  wards =signal<WardRestaurantCount[]>([]);
+   resultsward = this.store.selectSignal(selectRestaurantWardData );
+    loadingRestaurant = this.store.selectSignal(selectRestaurantWardLoading);
   items = signal<NominatimPlace[]>([]);
     results = this.store.selectSignal(selectResults);
     searchControl = new FormControl('');
@@ -74,7 +74,7 @@ export class Header {
         this.store.dispatch(search({ query: '' }));
       }
     });
- 
+ this.store.dispatch(loadRestaurantByWard());
 }
 
  findByPick(item: NominatimPlace) {
@@ -121,10 +121,18 @@ this.searchControl.setValue(this.keyword(), {
   onTap(){
  this.router.navigate(['/wardrestaurant']);
  }
-selectWard(item: {ward:string ,count:number}, event: Event) {
+selectWard(ward:WardModel, event: Event) {
      
-    this.selectedWard = item.ward;
-    this.router.navigate(['/wardrestaurant']);
+    this.selectedWard = ward.name;
+
+
+   this.router.navigate(['/wardrestaurant'], {
+      queryParams: {
+        osmId: ward.osmId
+      }
+    });
+
+    // this.router.navigate(['/wardrestaurant']);
     event.stopPropagation();
     this.showWard.set(!this.showWard());
    
@@ -199,5 +207,14 @@ effect(() => {
   this.items.set(results);
 });
 
+
+effect(() => {
+
+
+
+  const resultsward = this.resultsward();
+  console.log(' RESULTS UPDATED:', resultsward);
+  this.wards.set(resultsward);
+});
   }
 }

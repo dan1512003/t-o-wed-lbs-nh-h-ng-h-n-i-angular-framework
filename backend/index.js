@@ -2,13 +2,28 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const route = require("./src/routes/route");
+const cookieParser = require('cookie-parser');
 
 // parse JSON body
 app.use(express.json());
 
+app.use(cookieParser());
 
-// enable CORS cho tất cả các request
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    
+    if (!origin) return callback(null, true);
+
+
+    if (origin.startsWith("http://localhost")) {
+      return callback(null, true);
+    }
+
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true
+}));
 
 app.use("/api", route);
 

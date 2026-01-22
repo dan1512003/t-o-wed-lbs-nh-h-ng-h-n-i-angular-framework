@@ -8,62 +8,87 @@
 
     <div class="scroll-row" #scrollContainer (scroll)="checkScroll()">
 
-      @for (item of wards(); track item.ward.name) {
+    
+      @for (item of wards(); track $index) {
 
         <div class="town-card" (click)="goToWard(item)">
 
-          <div class="image"
-               [style.backgroundImage]="'url(' + (item.ward.image || 'https://via.placeholder.com/150') + ')'">
+          <div class="image">
+                   @if (item.image) {
+    <img
+      [src]="item.image"
+      class="img-fluid"
+      style="height:100%; width:100%; object-fit:cover;"
+      alt=""
+    />
+  } @else {
+    <div   style="height:100%; width:100%; background-color: grey;"></div>
+  }
+     
           </div>
 
-          <div class="title">{{ item.ward.name }}</div>
+          <div class="title">{{ item.name }}</div>
 
           <div class="d-flex align-items-center justify-content-start">
-            <span class="d-flex align-items-center justify-content-start star-container">4.7</span>
+            <span class="d-flex align-items-center justify-content-start star-container">
+            {{
+getRating(item)
+  }}
+            </span>
 
-         @for (i of starIndexes; track i) {
-  <div class="d-flex align-items-center justify-content-start star-container">
-    <div class="star-wrapper" [ngStyle]="{
-        'position': 'relative',
-        'width': '8px',
-        'height': '10px',
-        'margin': '0',
-        'padding': '0',
-        'display': 'flex'
-      }">
+            @for (i of starIndexes; track i) {
+              <div class="d-flex align-items-center justify-content-start star-container">
+                <div class="star-wrapper" [ngStyle]="{
+                    'position': 'relative',
+                    'width': '8px',
+                    'height': '10px',
+                    'margin': '0',
+                    'padding': '0',
+                    'display': 'flex'
+                  }">
 
-      <div [ngStyle]="{
-          color: 'lightgray',
-          fontSize: '10px',
-          lineHeight: '1',
-          position: 'absolute',
-          top: '0',
-          left: '0'
-        }">★
-      </div>
+                  <div [ngStyle]="{
+                      color: 'lightgray',
+                      fontSize: '10px',
+                      lineHeight: '1',
+                      position: 'absolute',
+                      top: '0',
+                      left: '0'
+                    }">★
+                  </div>
 
-      <div [ngStyle]="{
-          color: 'red',
-          fontSize: '10px',
-          lineHeight: '1',
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          width: getStarFill(i) + '%',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap'
-        }">★
-      </div>
+                  <div [ngStyle]="{
+                      color: 'red',
+                      fontSize: '10px',
+                      lineHeight: '1',
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width:getStarFill(
+        $index,
+       getRating(item)
+      ) + '%',
+                      overflow: 'hidden',
+                      whiteSpace: 'nowrap'
+                    }">★
+                  </div>
 
-    </div>
-  </div>
-}
+                </div>
+              </div>
+            }
           </div>
 
-          <div class="subtitle">{{ item.count }} Restaurant</div>
+            <div style="
+    color: blue;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+">{{item.openingHour}}</div>
         </div>
 
       } 
+
 
     </div>
 
