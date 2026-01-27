@@ -25,6 +25,7 @@ function createToken(user) {
 
 
 exports.checkphone = async (req, res) => {
+  console.log('Hàm checkphone');
   try {
     const { phone } = req.body;
 
@@ -49,6 +50,8 @@ exports.checkphone = async (req, res) => {
 
 
 exports.checkemail = async (req, res) => {
+
+   console.log('Hàm checkemail');
   try {
     const { email, phone } = req.body;
 
@@ -99,7 +102,8 @@ exports.checkemail = async (req, res) => {
     res.cookie('access_token', token, {
       httpOnly: true,
       secure: false,              
-      sameSite: 'Lax',         
+      sameSite: 'Lax',   
+       path: '/',       
       maxAge:30 * 24 * 60 * 60 * 1000   
     });
 
@@ -117,17 +121,23 @@ exports.checkemail = async (req, res) => {
 
 exports.decodeToken = async (req, res) => {
   try {
+   
+
     const token = req.cookies?.access_token;
+     if (!token) {
+      return res.json(null);
+    }
     const user = decodeTokenFunc(token);
-    res.json(user ? user.toJson() : null);
+     return res.json(user ? user.toJson() : null);
   } catch (err) {
     console.error('decodeToken error:', err.message);
-    res.status(500).json({ error: err.message });
+    return res.json(null);
   }
 };
 
 
 exports.saveUser = async (req, res) => {
+  console.log('Hàm saveuser');
   try {
     const { email, phone, firstname, lastname } = req.body;
     const fullname = `${firstname} ${lastname}`;
@@ -152,6 +162,7 @@ exports.saveUser = async (req, res) => {
       httpOnly: true,
       secure: false,          
       sameSite: "Lax",
+       path: '/', 
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
@@ -165,6 +176,7 @@ exports.saveUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  console.log('Hàm update');
   try {
     const { oldemail, email, phone, firstname, lastname } = req.body;
     const fullname = `${firstname} ${lastname}`;
@@ -196,6 +208,7 @@ exports.updateUser = async (req, res) => {
       httpOnly: true,
       secure: false,
       sameSite: "Lax",
+       path: '/', 
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
 
@@ -203,6 +216,21 @@ exports.updateUser = async (req, res) => {
 
   } catch (err) {
     console.error("updateUser error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    console.log('Cookie trước khi logout:', req.cookies?.access_token);
+
+    res.clearCookie('access_token');
+
+    console.log('Cookie sau khi clear:', req.cookies?.access_token);
+
+    return res.json(null);
+  } catch (err) {
+    console.error('logout error:', err.message);
     res.status(500).json({ error: err.message });
   }
 };

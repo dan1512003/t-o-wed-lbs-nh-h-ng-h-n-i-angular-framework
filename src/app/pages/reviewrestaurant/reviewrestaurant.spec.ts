@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import 'zone.js'
-import { Restaurantbooking } from './restaurantbooking';
 
-describe('Restaurantbooking', () => {
-  let component: Restaurantbooking;
-  let fixture: ComponentFixture<Restaurantbooking>;
+import { Reviewrestaurant } from './reviewrestaurant';
+
+describe('Reviewrestaurant', () => {
+  let component: Reviewrestaurant;
+  let fixture: ComponentFixture<Reviewrestaurant>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Restaurantbooking]
+      imports: [Reviewrestaurant]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Restaurantbooking);
+    fixture = TestBed.createComponent(Reviewrestaurant);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

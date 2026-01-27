@@ -62,3 +62,19 @@ export const findByClickFailure = createAction(
   '[Restaurant API] Find By Click Failure',
   props<{ error: string }>()
 );
+
+// load detail
+export const loadRestaurantById = createAction(
+  '[Restaurant Detail] Load By Id',
+  props<{ id: number }>()
+);
+
+export const loadRestaurantByIdSuccess = createAction(
+  '[Restaurant Detail] Load By Id Success',
+  props<{ restaurant: RestaurantModel }>()
+);
+
+export const loadRestaurantByIdFailure = createAction(
+  '[Restaurant Detail] Load By Id Failure',
+  props<{ error: string }>()
+);

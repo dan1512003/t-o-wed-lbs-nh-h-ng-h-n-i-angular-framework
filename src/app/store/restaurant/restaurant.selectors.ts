@@ -13,3 +13,8 @@ export const selectLoadingRestaurant = createSelector(
   selectRestaurantSearch,
   (state) => state.loading
 );
+
+export const selectSelectedRestaurant = createSelector(
+  selectRestaurantSearch,
+  state => state.selectedRestaurant
+);

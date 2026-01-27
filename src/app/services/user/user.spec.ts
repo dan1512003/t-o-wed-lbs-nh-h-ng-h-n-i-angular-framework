@@ -149,7 +149,7 @@ afterEach(() => {
   // test service edituser
   it('should edit user', () => {
     service
-      .editUser('test11@example.com', '0987654321', 'Bố', 'Lữ')
+      .editUser('test11@example.com', '0987654321', 'Bố', 'Lữ','test11@example.com')
       .subscribe(res => {
         expect(res).toEqual(responseedituser);
       });

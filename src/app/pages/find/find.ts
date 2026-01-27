@@ -41,13 +41,7 @@ export class Find implements AfterViewInit {
 
 
    searchControl = new FormControl('');
-     restaurant: any = {
-    name: 'Pizza House',
-    image: 'https://via.placeholder.com/400x200', 
-    openingHour: '09:00 AM - 10:00 PM',
-    overallRating: 18, 
-    reviewCount: 5 
-  };
+     restaurant =signal<RestaurantModel | null>(null)
  private map: any;
 private markerLayer: any;
 
@@ -141,9 +135,13 @@ if(!this.isSearch())return;
 
 
   goToRestaurantPage() {
-    if (!this.restaurant) return;
+    if (!this.restaurant()) return;
 
-    console.log('Open restaurant page', this.restaurant);
+      this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: this.restaurant()?.osmId??""
+      }
+    });
   }
 getStarFill(index: number, overRating?: number): number {
   const rating = overRating ?? this.overallrating();
@@ -195,8 +193,14 @@ getStarFill(index: number, overRating?: number): number {
 }
 
 
- onTap(){
- this.router.navigate(['/restaurantdetail']);
+ onTap(osmid:string){
+
+    this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: osmid
+      }
+    });
+
  }
   onFind() {
     this.isSetView.set(true);
@@ -265,7 +269,7 @@ console.log('BBox:', {
       const marker = L.marker([res.lat, res.lon], { icon });
 
       marker.on('click', () => {
-        this.restaurant = res;
+        this.restaurant.set(res)
         this.isFullMap.set(true);
         this.isClickMarker.set(true);
               const overallRating: number =
@@ -349,11 +353,14 @@ this.map.on('click', (event: L.LeafletMouseEvent) => {
     }
       this.activateroute.queryParams.subscribe(params => {
     const keyword = params['keyword'] ?? '';
+       
        console.log("keyword findssss",keyword)
+ 
+
          this.searchControl.setValue(keyword, {
     emitEvent: false 
   });
-this.isSetView.set(true);
+
     this.store.dispatch(findBySearch({query:keyword}));
     });
   }

@@ -5,7 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { Restaurant } from '../../services/restaurant/restaurant';
 import { Ward } from '../../services/ward/ward';
 import { Action } from '@ngrx/store';
-import { isDateInCurrentMonth, RestaurantWardEffects } from './restaurantward.effects';
+import { checkSchedule, isDateInCurrentMonth, RestaurantWardEffects } from './restaurantward.effects';
 import { Review } from '../../services/review/review';
 import { Diet } from '../../services/diet/diet';
 import { loadCuisine, loadCuisineFailure, loadCuisineSuccess, loadRestaurantAvail, loadRestaurantAvailFailure, loadRestaurantAvailSuccess, loadRestaurantByWard, loadRestaurantByWardFailure, loadRestaurantByWardSuccess, loadRestaurantCuisine, loadRestaurantCuisineFailure, loadRestaurantCuisineSuccess, loadRestaurantHighRate, loadRestaurantHighRateFailure, loadRestaurantHighRateSuccess, loadRestaurantNew, loadRestaurantNewFailure, loadRestaurantNewSuccess } from './restaurantward.actions';
@@ -249,7 +249,7 @@ describe('restaurantAvail$', () => {
                 "delivery": null,
                 "description": null,
                 "phone": "+84438257338",
-                "opening_hour": "24/7",
+                "opening_hour": "Mo-Su 06:00-22:00",
                 "cuisine": "vietnamese",
                 "website": "http://www.pho10lyquocsu.com.vn",
                 "addr_street": "Phố Lý Quốc Sư",
@@ -288,9 +288,24 @@ describe('restaurantAvail$', () => {
         const restaurantByIdWardResponse = cold('--y|', { y: mockApiByIdWardResponse });
         restaurantSpy.getRestaurantByIdWard.and.returnValue(restaurantByIdWardResponse);
         reviewSpy.getReview.and.returnValue(cold('--e|', { e: mockReviewResponse }));
-
+ const now = new Date();
+        const dayMap: any = {
+          Mon: 'Mo',
+          Tue: 'Tu',
+          Wed: 'We',
+          Thu: 'Th',
+          Fri: 'Fr',
+          Sat: 'Sa',
+          Sun: 'Su',
+        };
+        const dayAbbr =
+          dayMap[new Intl.DateTimeFormat('en', { weekday: 'short' }).format(now)];
      const featuresRestaurant: any[] = mockApiByIdWardResponse['features'];
-        const resultsRestaurant= featuresRestaurant.map(f => RestaurantModel.fromFeature(f));
+        const resultsRestaurant= featuresRestaurant.map(f => RestaurantModel.fromFeature(f))
+        .filter((r) => {
+                      if (r.openingHour === '24/7') return true;
+                      return checkSchedule(r.openingHour, dayAbbr, now);
+                    });
            const reviews: ReviewModel[] =
            mockReviewResponse.map(d => ReviewModel.fromJson(d));
            const restaurantMap = new Map<string, RestaurantModel>();

@@ -51,12 +51,14 @@ exports.getAddressFromLatLon = async (req, res) => {
         addressdetails: '1'
       });
 
-    const response = await fetch(url, { headers });
+    const response = await fetch(url);
     const data = await response.json();
+console.log(data)
+    const place = Array.isArray(data) ? data[0] : data;
 
-    res.json({
-      displayName: data?.display_name ?? 'Không tìm thấy địa chỉ'
-    });
+res.json({
+  displayName: place?.display_name ?? 'Không tìm thấy địa chỉ'
+});
   } catch (error) {
     console.error('reverse error:', error);
     res.status(500).json({ message: 'Failed to reverse geocode' });

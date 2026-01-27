@@ -12,6 +12,10 @@ import { RestaurantEffects } from './store/restaurant/restaurant.effects';
 import { restaurantSearchReducer } from './store/restaurant/restaurant.reducer';
 import { restaurantWardReducer } from './store/restaurantward/restaurantward.reducer';
 import { RestaurantWardEffects } from './store/restaurantward/restaurantward.effects';
+import { userReducer } from './store/user/user.reducer';
+import { UserEffects } from './store/user/user.effects';
+import { reviewReducer } from './store/reviews/review.reducer';
+import { ReviewEffects } from './store/reviews/review.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -21,9 +25,11 @@ export const appConfig: ApplicationConfig = {
       search: searchReducer,
       restaurantSearch:restaurantSearchReducer,
       restaurantWard:restaurantWardReducer,
+      user:userReducer,
+      review:reviewReducer
       
 }),
-    provideEffects([SearchEffects,RestaurantEffects,RestaurantWardEffects]),
+    provideEffects([SearchEffects,RestaurantEffects,RestaurantWardEffects,UserEffects,ReviewEffects]),
     provideHttpClient( withFetch()),
     
 ]

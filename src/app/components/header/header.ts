@@ -11,6 +11,9 @@ import { search } from '../../store/search/search.actions';
 import { loadRestaurantByWard, WardRestaurantCount } from '../../store/restaurantward/restaurantward.actions';
 import { selectRestaurantWardData, selectRestaurantWardLoading } from '../../store/restaurantward/restaurantward.selectors';
 import { WardModel } from '../../model/ward/ward.model';
+import { checkEmail, checkPhone, checkToken, logout, saveUser } from '../../store/user/user.actions';
+import { UserModel } from '../../model/user/user.model';
+import { selectPhoneResult, selectUser, selectUserLoading } from '../../store/user/user.selectors';
 interface RegisterFormData {
   firstName: string;
   lastName: string;
@@ -27,6 +30,7 @@ interface RegisterFormData {
 export class Header {
   isEmail:boolean =false;
   isLogin:boolean=true;
+  isSignin:boolean=false;
   showUser:boolean = false;
   showSearch:boolean = false;
   showSheet:boolean =false;
@@ -37,13 +41,22 @@ export class Header {
   hasSearchedEmit =output<boolean>();
   sticky=input<boolean>(false);
   isScrollingChange = output<boolean>();
+
+  
+  phone = signal< any[]>([]);
+  isclick =signal<boolean>(false);
   selectedWard:string = 'Hoàn Kiếm';
   phoneNumber:string = '';
   email:string='';
   wards =signal<WardRestaurantCount[]>([]);
-   resultsward = this.store.selectSignal(selectRestaurantWardData );
+   resultsward = this.store.selectSignal(selectRestaurantWardData);
+     user = signal<UserModel | null>(null);
+   resultuser = this.store.selectSignal(selectUser);
+   resultphone =this.store.selectSignal(selectPhoneResult);
     loadingRestaurant = this.store.selectSignal(selectRestaurantWardLoading);
+    loadingUser = this.store.selectSignal(selectUserLoading);
   items = signal<NominatimPlace[]>([]);
+  avatarColor= input<string>();
     results = this.store.selectSignal(selectResults);
     searchControl = new FormControl('');
     formData:RegisterFormData = {
@@ -55,7 +68,7 @@ export class Header {
 
   
   ngOnInit() {
-   
+
  this.searchControl.valueChanges
     .pipe(
       debounceTime(300),
@@ -137,7 +150,12 @@ selectWard(ward:WardModel, event: Event) {
     this.showWard.set(!this.showWard());
    
   }
-
+onProfile(){
+   this.router.navigate(['/userprofile']);
+}
+onLogout(){
+this.store.dispatch(logout());
+}
   onSubmit() {
     
   }
@@ -156,6 +174,8 @@ selectWard(ward:WardModel, event: Event) {
   document.body.style.width = '100%';
   this.showSheet = true;
   console.log('Add Review clicked');
+  this.isLogin =true;
+  this.isSignin =false;
 }
 
 closeSheet() {
@@ -174,15 +194,32 @@ this.isScrollingChange.emit (false);
 
 
 handleNext() {
+  
+  if( !this.showSheet){
+    return; 
+  }
   if(!this.isLogin){
-  console.log(this.formData);
-   this.router.navigate(['/userprofile']);
-    this.showSheet = false;
+ this.store.dispatch(saveUser({
+  phone:this.formData.phone,
+  email:this.formData.email,
+  lastname:this.formData.lastName,
+ firstname:this.formData.firstName,
+}));
   }else{
   if(this.isEmail){
-   this.isLogin=false;
+
+     if (this.phone().length > 0) {
+   this.store.dispatch(checkEmail({phone:this.phoneNumber,email:this.email }));
   }else{
+    this.store.dispatch(checkEmail({email:this.email }));
+  }
+  this.isLogin =false;
+  }else{
+    this.isclick.set(true)
  console.log('Phone number:', this.phoneNumber);
+  console.log(' RESULTS USER:',this.loadingUser());
+  this.store.dispatch(checkPhone({phone:this.phoneNumber}));
+ 
   }
 
   }
@@ -192,16 +229,63 @@ handleNext() {
 
   goToEmail() {
   this.isEmail=true;
+  this.isclick.set(false);
   }
    goToPhone() {
   this.isEmail=false;
   }
   constructor(private router:Router,private store:Store<AppState>){
+ 
+effect(() => {
+  const resultphone= this.resultphone();
+  console.log(' RESULTS Phone:',resultphone);
+  this.phone.set(resultphone);
+  if (resultphone && resultphone.length > 0) {
+    this.isEmail = true;
+    return;
+  }
+   
+    setTimeout(() => {
+      this.isclick.set(false)
+    }, 5000);
+  
+});
+ 
+ effect(() => {
+ 
+
+ const resultuser= this.resultuser();
+  console.log(' RESULTS USER111:',resultuser);
+    console.log(' RESULTS USER:',this.loadingUser());
+  this.user.set(resultuser)
+   if(this.showSheet){
+         if(resultuser !=null){
+             this.showSheet = false;
+           this.closeSheet();
+        this.isLogin =true;
+  this.isSignin =false;
+     this.router.navigate(['/userprofile']);
+    
+  }else{
+if(!this.isSignin){
+    if( !this.isLogin){
+        this.isSignin =true;
+   
+  }
+}
+  }
+
+     }
+
+    
+});
+ effect(() => {
+  const results = this.results();
+  console.log(' RESULTS UPDATED:', results);
+  this.items.set(results);
+});
 
 effect(() => {
-
-
-
   const results = this.results();
   console.log(' RESULTS UPDATED:', results);
   this.items.set(results);
@@ -217,4 +301,10 @@ effect(() => {
   this.wards.set(resultsward);
 });
   }
+
+  getFirstLetter(name: string): string {
+  if (!name) return '';
+  return name.trim().charAt(0).toUpperCase();
+}
+
 }

@@ -46,13 +46,19 @@
 
    
     <div class="d-flex align-items-center p-3 text-white">
-      <div
+     @if(user() !=null){
+       <div
         (click)="toggleUser()"
         class="d-flex align-items-center gap-2 mb-1 ms-3 text-white"
         style="cursor: pointer;position: relative;"
       >
-        <i class="fas fa-user"></i>
-        <p class="mb-0">Hàn Phi</p>
+  <div
+  class="avatar-circle"
+  [style.background]="avatarColor()"
+>
+  {{ getFirstLetter(user()?.name ??" ") }}
+</div>
+        <p class="mb-0">{{user()?.name}}</p>
 
   @if (showUser) {
  
@@ -84,17 +90,29 @@
     "
   >
     <h5 class="pb-2 mb-3 me-1 ms-1" style="border-bottom: 1px solid grey">
-      Xin chào, Hàn!
+      Hello, {{user()?.name}}!
     </h5>
-    <p style="cursor: pointer">Profile of me</p>
-    <p>Reservation Restaurant</p>
+    <p style="cursor: pointer" (click)="onProfile()">Profile of me</p>
+    <p>Review Restaurant</p>
     <p>Save Restaurant</p>
-    <p (click)="openSheet()">Đăng ký</p>
+    <p (click)="onLogout()">Log out</p>
   </div>
 }
      
       </div>
 
+     }@else{
+        <div
+        (click)="openSheet()"
+        class="d-flex align-items-center justify-content-center text-white"
+        style="cursor: pointer;
+        position: relative;background-color: orange;
+         height: 30px;
+         width: 100px;
+         border-radius: 4px;
+        "
+      > Sign in</div>
+     }
       
 
      
@@ -203,8 +221,16 @@
       </div>
 
       <div class="sheet-content">
+@if(phone().length ==0 && isclick()==true  ){
 
-   
+ <div style="
+   display: flex; 
+   width: 100%; 
+   justify-content: center;
+    align-items: center; 
+    color:red"> The phone number does not exist. Please use email instead</div>
+}
+  
         @if (isLogin) {
           <div class="pageLogin">
 
@@ -263,7 +289,7 @@
         }
 
         <!-- Register -->
-        @if (!isLogin) {
+        @if (isSignin) {
           <div class="pageRegister">
 
             <div class="spacer-30"></div>

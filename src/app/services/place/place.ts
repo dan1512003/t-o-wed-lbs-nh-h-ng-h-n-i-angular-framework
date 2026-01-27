@@ -24,7 +24,7 @@ export class Place {
       }
     }).pipe(
       map((data)=>{
-        const displayName = data?.display_name;
+        const displayName = data?.displayName;
         return displayName && typeof displayName === 'string'
           ? displayName
           : 'Không tìm thấy địa chỉ';

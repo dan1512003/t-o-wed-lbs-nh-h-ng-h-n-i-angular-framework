@@ -7,7 +7,7 @@
         <div>{{restaurants().length}} restaurant</div>
              @if(restaurants().length>0){
         @for(restaurant of restaurants();track restaurant.osmId){
-<div (click)="onTap()">
+<div (click)="onTap(restaurant.osmId)">
         <div class="row" style="
     cursor: pointer;
     background-color: white;
@@ -111,18 +111,19 @@ getRating(restaurant)
         @if(isClickMarker()) {
         <div class="restaurant-panel">
           <div class="panel-overlay">
-            <div class="restaurant-card" (click)="goToRestaurantPage()">
+              @if(restaurant() !=null){
+             <div class="restaurant-card" (click)="goToRestaurantPage()">
 
               <div class="restaurant-image" [ngStyle]="{
-                'background-image': restaurant?.image ? 'url(' + restaurant.image + ')' : 'none',
-                'background-color': restaurant?.image ? 'transparent' : 'grey'
+                'background-image': restaurant()?.image ? 'url(' + restaurant()?.image + ')' : 'none',
+                'background-color': restaurant()?.image ? 'transparent' : 'grey'
               }">
                 <button class="close-btn" (click)="closeMarker($event)">
                   <i class="fa fa-times"></i>
                 </button>
               </div>
 
-              <div class="restaurant-name">{{ restaurant.name }}</div>
+              <div class="restaurant-name">{{ restaurant()?.name }}</div>
 
               <div class="d-flex align-items-center justify-content-start">
                 <h4 class="d-flex align-items-center justify-content-start star-container">{{overallrating()}}</h4>
@@ -162,10 +163,11 @@ getRating(restaurant)
                 }
               </div>
 
-              <div class="restaurant-hours">{{ restaurant.openingHour }}</div>
+              <div class="restaurant-hours">{{ restaurant()?.openingHour }}</div>
               <div class="tap-to-open">Tap to open page</div>
 
             </div>
+           }
           </div>
         </div>
       }

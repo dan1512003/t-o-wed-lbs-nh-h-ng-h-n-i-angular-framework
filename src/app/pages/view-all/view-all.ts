@@ -30,13 +30,7 @@ export class ViewAll {
   loadingRestaurantNew = this.store.selectSignal(selectRestaurantNewLoading);
   isSetView=signal<boolean>(false);
   isClickMarker= signal<boolean>(false);
-    restaurant: any = {
-    name: 'Pizza House',
-    image: 'https://via.placeholder.com/400x200', 
-    openingHour: '09:00 AM - 10:00 PM',
-    overallRating: 18, 
-    reviewCount: 5 
-  };
+  restaurant =signal<RestaurantModel | null>(null)
    private map: any;
 private markerLayer: any;
   constructor(
@@ -101,10 +95,14 @@ this.renderMarkers(this.restaurants());
   }
 
 
-  goToRestaurantPage() {
-    if (!this.restaurant) return;
+   goToRestaurantPage() {
+    if (!this.restaurant()) return;
 
-    console.log('Open restaurant page', this.restaurant);
+      this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: this.restaurant()?.osmId??""
+      }
+    });
   }
  getStarFill(index: number, overRating?: number): number {
   const rating = overRating ?? this.overallrating();
@@ -131,8 +129,14 @@ this.renderMarkers(this.restaurants());
     (restaurant.overallRating / restaurant.reviewCount).toFixed(1)
   );
 }
- onTap(){
- this.router.navigate(['/restaurantdetail']);
+ onTap(osmid:string){
+
+    this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: osmid
+      }
+    });
+
  }
   onSubmit() {
     
@@ -171,7 +175,7 @@ this.renderMarkers(this.restaurants());
       const marker = L.marker([res.lat, res.lon], { icon });
 
       marker.on('click', () => {
-        this.restaurant = res;
+        this.restaurant.set(res)
         this.isFullMap.set(true);
         this.isClickMarker.set(true);
               const overallRating: number =

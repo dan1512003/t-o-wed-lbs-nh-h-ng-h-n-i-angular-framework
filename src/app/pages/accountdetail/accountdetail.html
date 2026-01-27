@@ -1,0 +1,63 @@
+<div class="flex-fill w-100 bg-white account-detail">
+
+  @if (isError() === true) {
+    <div class="error-message d-flex justify-content-center align-items-center">
+      {{ error() }}
+    </div>
+  }
+
+  @if (user() != null) {
+
+    <div class="input-wrapper">
+      <div class="text-input">First name</div>
+      <input
+        type="text"
+        placeholder="First name"
+        [(ngModel)]="formData.firstName"
+        (ngModelChange)="onFormChange()"
+      />
+    </div>
+
+    <div class="input-wrapper">
+      <div class="text-input">Last name</div>
+      <input
+        type="text"
+        placeholder="Last name"
+        [(ngModel)]="formData.lastName"
+        (ngModelChange)="onFormChange()"
+      />
+    </div>
+
+    <div class="input-wrapper">
+      <div class="text-input">Phone</div>
+      <input
+        type="text"
+        placeholder="Phone"
+        [(ngModel)]="formData.phone"
+        (ngModelChange)="onFormChange()"
+      />
+    </div>
+
+    <div class="input-wrapper">
+      <div class="text-input">Email</div>
+      <input
+        type="text"
+        placeholder="Email"
+        [(ngModel)]="formData.email"
+        (ngModelChange)="onFormChange()"
+      />
+    </div>
+  }
+
+  <div class="d-flex justify-content-center save-wrapper">
+    <div
+      class="d-flex w-50 fw-bolder justify-content-center align-items-center menu-item"
+      [class.active]="isChange()"
+      [class.disabled]="!isChange()"
+      (click)="isChange() && onSave()"
+    >
+      SAVE CHANGE
+    </div>
+  </div>
+
+</div>

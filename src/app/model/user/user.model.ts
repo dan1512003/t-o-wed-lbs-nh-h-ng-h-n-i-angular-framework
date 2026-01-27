@@ -1,10 +1,10 @@
-export class User {
+export class UserModel {
   email: string;
   phone: string;
   image?: string | null;
   name?: string | null;
 
-  constructor(data?: Partial<User>) {
+  constructor(data?: Partial<UserModel>) {
     this.email = data?.email ?? '';
     this.phone = data?.phone ?? '';
     this.image = data?.image ?? null;
@@ -12,8 +12,8 @@ export class User {
   }
 
 
-  static fromJson(json: any): User {
-    return new User({
+  static fromJson(json: any): UserModel {
+    return new UserModel({
       email: json?.email?.toString() ?? '',
       phone: json?.phone?.toString() ?? '',
       image: json?.image?.toString() ?? null,

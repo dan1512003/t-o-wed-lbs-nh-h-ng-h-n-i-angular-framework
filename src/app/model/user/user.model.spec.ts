@@ -1,4 +1,5 @@
-import { User } from './user.model';
+import { UserModel } from "./user.model";
+
 
 describe('User Model', () => {
 
@@ -12,7 +13,7 @@ describe('User Model', () => {
   };
 
   it('should create an instance from constructor', () => {
-    const user = new User({
+    const user = new UserModel({
       email: 'test@example.com',
       phone: '0123456785',
       image: null,
@@ -24,7 +25,7 @@ describe('User Model', () => {
   });
 
   it('should create User from JSON', () => {
-    const user = User.fromJson(mockApiResponse.user);
+    const user = UserModel.fromJson(mockApiResponse.user);
 
     expect(user).toBeTruthy();
     expect(user.email).toBe('test@example.com');
@@ -34,17 +35,17 @@ describe('User Model', () => {
   });
 
   it('should return correct firstName', () => {
-    const user = User.fromJson(mockApiResponse.user);
+    const user = UserModel.fromJson(mockApiResponse.user);
     expect(user.firstName).toBe('luka');
   });
 
   it('should return correct lastName', () => {
-    const user = User.fromJson(mockApiResponse.user);
+    const user = UserModel.fromJson(mockApiResponse.user);
     expect(user.lastName).toBe('luka');
   });
 
   it('should convert User to JSON', () => {
-    const user = User.fromJson(mockApiResponse.user);
+    const user = UserModel.fromJson(mockApiResponse.user);
 
     const json = user.toJson();
 

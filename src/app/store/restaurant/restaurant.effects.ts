@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { findByClick, findByClickFailure, findByClickSuccess, findByMove, findByMoveFailure, findByMoveSuccess, findBySearch, findBySearchFailure, findBySearchSuccess } from "./restaurant.actions";
+import { findByClick, findByClickFailure, findByClickSuccess, findByMove, findByMoveFailure, findByMoveSuccess, findBySearch, findBySearchFailure, findBySearchSuccess, loadRestaurantById, loadRestaurantByIdFailure, loadRestaurantByIdSuccess } from "./restaurant.actions";
 import { mergeMap, map, catchError, switchMap, exhaustMap, debounceTime } from 'rxjs/operators';
 import { of, forkJoin, Observable } from 'rxjs'; 
 import { NominatimPlace } from "../../model/nominatimplace/nominatimplace.model";
@@ -221,6 +221,52 @@ findByMove$ = createEffect(() =>
       })
     )
   );
+
+loadRestaurantById$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(loadRestaurantById),
+    switchMap(({ id }) =>
+      this.restaurantService.getRestaurantById(id).pipe(
+
+        map(res => {
+          console.log('[API response]', res);
+
+          const feature = res?.features?.[0];
+          console.log('[Feature]', feature);
+
+          if (!feature) {
+            console.error('[Error] Restaurant not found');
+            throw new Error('Restaurant not found');
+          }
+
+          const restaurant = RestaurantModel.fromFeature(feature);
+          console.log('[RestaurantModel]', restaurant);
+
+          return restaurant;
+        }),
+
+        switchMap(restaurant =>
+          addReviewToRestaurant([restaurant], this.reviewService)
+        ),
+
+        map(restaurantMap => {
+          const restaurant = Array.from(restaurantMap.values())[0];
+          console.log('[Final restaurant after review]', restaurant);
+
+          return loadRestaurantByIdSuccess({
+            restaurant,
+          });
+        }),
+
+        catchError(err => {
+          console.error('[Effect error]', err);
+          return of(loadRestaurantByIdFailure({ error: err.message }));
+        })
+      )
+    )
+  )
+);
+
 
   constructor(
     private actions$: Actions,

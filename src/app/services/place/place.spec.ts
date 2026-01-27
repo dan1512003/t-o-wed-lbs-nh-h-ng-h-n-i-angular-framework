@@ -88,6 +88,7 @@ describe('Place', () => {
     const lat = -34.4407231;
     const lon = -58.7051623;
  const mockLatLonResponse = {
+  "displayName":"Autopista Pedro Eugenio Aramburu, El Triángulo, Partido de Malvinas Argentinas, Buenos Aires, B1619AGS, Argentina",
     "place_id": 16021473,
     "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
     "osm_type": "way",

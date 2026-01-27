@@ -1,22 +1,75 @@
 <div class="flex-fill w-100">
   <div style="height:300px;">
+  
+
+                  @if (restaurant()?.image) {
     <img
-      src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"
-      alt="Nhà hàng sang trọng"
+      [src]="restaurant()?.image"
       class="img-fluid"
-      style="height:100%; width:100%; object-fit:cover;"
-    >
+     style="height:100%; width:100%; object-fit:cover;"
+      alt=""
+    />
+  } @else {
+    <div   style="height:100%; width:100%; background-color: grey;"></div>
+  }
   </div>
 
   <div class="row">
     <div class="d-none d-xl-flex col-xl-2 h-1"></div>
 
     <div class="col-12 col-xl-8">
-      <h2>Bacari Silverlake</h2>
-      <div class="d-flex">
-        <p>4.7(1.789)</p>
-        <p>$56-$89</p>
-        <p>Xuân lãng</p>
+      @if (restaurant() !=null) {
+
+        <h2>{{
+          restaurant()?.name
+          }}</h2>
+      }
+      
+      <div class="d-flex flex-column">
+        <div class="d-flex align-items-center justify-content-start  " style="height: 20px;">  
+         
+                             <div class="d-flex" style="height:20px"> 
+                              <span class="d-flex ">{{ratingresult().overallrating}}</span>
+                            
+                            
+                            </div>
+              
+              
+             <div
+             class="d-flex align-items-center justify-content-start  " style="height: 20px; margin-left: 5px;"
+             
+             >@for (_ of [].constructor(totalStars); track $index) {
+                <div 
+
+                   [ngStyle]="{
+  position: 'relative',
+  width: '12px',
+  height: '15px',
+  display: 'flex',
+  marginRight: '6px',
+  cursor: 'pointer'
+}">
+                  <div [ngStyle]="{
+                        color:'lightgray', fontSize:'15px', lineHeight:'1',
+                        position:'absolute', top:'0', left:'0'
+                      }">★</div>
+                  <div [ngStyle]="{
+                        color:'red', fontSize:'15px', lineHeight:'1',
+                        position:'absolute', top:'0', left:'0',
+                        width:getStarFill($index)+'%', overflow:'hidden', whiteSpace:'nowrap'
+                      }">★</div>
+                </div>
+              }</div>
+
+              <span class="d-flex ">({{resultsReviews().length}} review)</span>
+            </div>
+       
+         <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-location-dot info-icon"></i>
+    <div >
+      <div>{{resultsAdress()}}</div>
+    </div>
+  </div>
       </div>
 
       <div class="bg-white" style="height:50px; position:sticky; top:70px; z-index:11;">
@@ -70,8 +123,11 @@
 
         <div class="row" style="border-bottom:1px solid grey;">
           <div class="col-12 col-sm-6 justify-content-start align-items-center">
-            <div class="d-flex align-items-center justify-content-start">
-              <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
+            <div class="d-flex align-items-center justify-content-start " style="height: 40px;">  
+         
+                             <div class="d-flex" style="height:40px"> 
+                              <h4 class="d-flex star-container">{{ratingresult().overallrating}}</h4></div>
+              
               
              @for (_ of [].constructor(totalStars); track $index) {
                 <div class="star-wrapper" 
@@ -102,40 +158,65 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 d-flex flex-column justify-content-center align-items-end">
-            @for( bar of ratingBars; track bar.score) {
-              <div class="rating-row">
-                <span class="score">{{bar.score}}</span>
-                <div class="track">
-                  <div class="fill" [style.width]="bar.width"></div>
-                </div>
-              </div>
-            }
-          </div>
+        <div class="col-12 col-sm-6 d-flex flex-column justify-content-center align-items-end">
+  @for (bar of ratingBars(); track bar.score) {
+    <div class="rating-row">
+      <span class="score">{{ bar.score }}</span>
+      <div class="track">
+        <div class="fill" [style.width]="bar.width"></div>
+      </div>
+    </div>
+  }
+</div>
+
         </div>
 
-        <h5>2k review</h5>
+        <h5>{{resultsReviews().length}} review</h5>
 
-        <div class="d-flex flex-column">
-          <div class="d-flex">
-            <div style="width:50px; height:50px; background-color:purple; border-radius:50%;"></div>
-            <span class="ms-2">Dan</span>
+        @for (item of firstTwoReviews(); track $index) {
+  <div class="d-flex flex-column mb-3">
+
+    <div class="d-flex">
+@if(item.user.name!=undefined && item.user.name!=null ){
+       <div
+  class="d-flex align-items-center justify-content-center text-white fw-bold"
+  [ngStyle]="{
+    width: '50px',
+    height: '50px',
+    backgroundColor: getUserColor(item.user.name),
+    borderRadius: '50%'
+  }"
+>
+  {{ getFirstLetter(item.user.name) }}
+</div>
+
+}
+      <span class="ms-2">{{ item.user.name }}</span>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-start">
+      @for (_ of [].constructor(5); track $index) {
+        <div class="star-wrapper"
+             [ngStyle]="{ position:'relative', width:'13px', height:'15px' }">
+          <div
+            [ngStyle]="{
+              color: isStarActive($index, item.review.overallrating) ? 'red' : 'lightgray',
+              fontSize: '15px',
+              lineHeight: '1'
+            }">
+            ★
           </div>
-
-          <div class="d-flex align-items-center justify-content-start">
-           @for (_ of [].constructor(totalStars); track $index){
-              <div class="star-wrapper"
-                   [ngStyle]="{position:'relative', width:'13px', height:'15px'}">
-                <div [ngStyle]="{
-                      color:isStarActive($index,3)?'red':'lightgray',
-                      fontSize:'15px', lineHeight:'1'
-                    }">★</div>
-              </div>
-            }
-          </div>
-
-          <div><span>Food good</span></div>
         </div>
+      }
+    </div>
+
+    <div>
+      <span>{{ item.review.command}}</span>
+    </div>
+
+  </div>
+}
+
 
         <div class="d-flex align-items-center justify-content-center mt-2 bg-white reservation"
              style="height:70px; width:100%;">
@@ -150,6 +231,112 @@
       <!-- DETAIL -->
       <div id="detail">
         <h3>Detail</h3>
+
+@if(restaurant() !=null){
+  <div class="d-flex flex-column info-list">
+
+  <!-- Address -->
+  <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-location-dot info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Address</div>
+      <div class="info-text">{{resultsAdress()}}</div>
+    </div>
+  </div>
+
+ 
+
+  <!-- Cuisine -->
+      @if(restaurant()?.cuisine != null && restaurant()?.cuisine !=""){
+
+   <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-utensils info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Cuisine</div>
+      <div class="info-text">{{restaurant()?.cuisine}}</div>
+    </div>
+  </div>
+}
+
+  <!-- Description -->
+@if(restaurant()?.description != null && restaurant()?.description !=""){
+
+    <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-file-lines info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Description</div>
+      <div class="info-text">{{restaurant()?.description}}</div>
+    </div>
+  </div>
+}
+
+  <!-- Phone -->
+   @if(restaurant()?.phone != null && restaurant()?.phone!=""){
+
+   <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-phone info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Phone</div>
+      <div class="info-text">{{restaurant()?.phone}}</div>
+    </div>
+  </div>
+}
+
+ 
+
+  <!-- Email -->
+      @if(restaurant()?.email    != null && restaurant()?.email!=""){
+ <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-envelope info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Email</div>
+      <div class="info-text">{{restaurant()?.email}}</div>
+    </div>
+  </div>
+}
+
+ 
+ 
+ 
+
+  <!-- Payment -->
+      @if(restaurant()?.payment != null && restaurant()?.payment){
+
+    <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-credit-card info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Payment</div>
+      <div class="info-text">{{restaurant()?.payment}}</div>
+    </div>
+  </div>
+}
+
+ 
+ 
+
+  <!-- Website -->
+      @if(restaurant()?.website!= null && restaurant()?.website!=""){
+
+    <div class="info-item d-flex align-items-start">
+    <i class="fa-solid fa-globe info-icon"></i>
+    <div class="info-content">
+      <div class="info-title">Website</div>
+      <div class="info-text">
+        <a target="_blank" rel="noopener noreferrer">
+          {{restaurant()?.website}}
+        </a>
+      </div>
+    </div>
+  </div>
+}
+
+ 
+
+
+</div>
+}
+
+
       </div>
     </div>
 
@@ -158,55 +345,99 @@
 </div>
 
 <!-- Bottom Sheet Overlay -->
-@if(showRateSheet) {
+@if (showRateSheet) {
   <div class="bottom-sheet-backdrop" (click)="closeRateSheet()">
-    <div class="bottom-sheet" (click)="$event.stopPropagation()">
+    <div
+      class="bottom-sheet"
+      [class.no-user]="user() == null"
+      (click)="$event.stopPropagation()"
+    >
+
+   
       <div class="sheet-header">
         <span class="close-btn" (click)="closeRateSheet()">Cancel</span>
-        <h5>Nhà hàng A</h5>
+        @if (restaurant() != null && user() != null) {
+          <h5>{{ restaurant()?.name }}</h5>
+        }
       </div>
 
-      <div class="sheet-content">
-        <div class="d-flex justify-content-center align-items-center">OVERALL RATING</div>
-        <div class="d-flex align-items-center justify-content-center">
-         @for (_ of [].constructor(totalStars); track $index) {
-            <div class="star-wrapper"
-                 (click)="setStar(categoryRatings().length-1,$index)"
-                 [ngStyle]="{position:'relative', width:'40px', height:'40px'}">
-              <div [ngStyle]="{
-                    color:isStarActiveUser($index,categoryRatings()[categoryRatings().length-1].rate)?'red':'lightgray',
-                    fontSize:'40px', lineHeight:'1'
-                  }">★</div>
-            </div>
-          }
-        </div>
+   
+      @if (user() != null) {
+        <div class="sheet-content">
 
-        @for( ci of firstThreeCategories(); track ci.name;let cii=$index) {
-          <div class="row rating-row">
-            <div class="col-2">{{ci.name}}</div>
-            <div class="col-10">
-              <div class="d-flex align-items-center justify-content-end">
-                @for( si of [].constructor(totalStars); track si) {
-                  <div class="star-wrapper" (click)="setStar(cii, si)">
-                    <div [ngStyle]="{
-                          color:isStarActiveUser(si,ci.rate)?'red':'lightgray'
-                        }">★</div>
-                  </div>
-                }
+          <div class="d-flex justify-content-center align-items-center">
+            OVERALL RATING
+          </div>
+
+          <div class="d-flex align-items-center justify-content-center">
+            @for (_ of [].constructor(totalStars); track $index) {
+              <div
+                class="star-wrapper"
+                (click)="setStar(categoryRatings().length - 1, $index)"
+              >
+                <div
+                  [ngStyle]="{
+                    color: isStarActiveUser(
+                      $index,
+                      categoryRatings()[categoryRatings().length - 1].rate
+                    )
+                      ? 'red'
+                      : 'lightgray'
+                  }"
+                >
+                  ★
+                </div>
+              </div>
+            }
+          </div>
+
+          @for (ci of firstThreeCategories(); track ci.name; let cii = $index) {
+            <div class="row rating-row">
+              <div class="col-2">{{ ci.name }}</div>
+              <div class="col-10">
+                <div class="d-flex align-items-center justify-content-end">
+              @for (_ of [].constructor(totalStars); track $index) {
+  <div class="star-wrapper" (click)="setStar(cii, $index)">
+    <div
+      [ngStyle]="{
+        color: isStarActiveUser($index, ci.rate)
+          ? 'red'
+          : 'lightgray'
+      }"
+    >
+      ★
+    </div>
+  </div>
+}
+
+                </div>
               </div>
             </div>
+          }
+
+          <div class="review">
+            <span>Describe your experience:</span>
+          <textarea rows="4" [(ngModel)]="reviewComment"></textarea>
+
           </div>
-        }
-
-        <div class="review">
-          <span>Describe your experience:</span>
-          <textarea rows="4" cols="60" placeholder=""></textarea>
         </div>
-      </div>
 
-      <div class="sheet-footer">
-        <button class="btn btn-danger">Submit</button>
-      </div>
+    
+        <div class="sheet-footer" (click)="submitReview()">
+          <button class="btn btn-danger">Submit</button>
+        </div>
+
+      } @else {
+
+        
+        <div class="sheet-content no-user-content">
+          <div class="login-warning">
+            You need to log in to leave a review
+          </div>
+        </div>
+
+      }
+
     </div>
   </div>
 }

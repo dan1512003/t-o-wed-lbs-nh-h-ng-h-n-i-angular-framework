@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, ViewChild ,ElementRef, signal} from '@angular/core';
 import { RestaurantModel } from '../../model/restaurant/restaurant.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-hight-scroll',
@@ -65,8 +66,12 @@ checkScroll() {
     this.canScrollLeft.set(el.scrollLeft > 0);
   this.canScrollRight.set(el.scrollLeft + el.clientWidth < el.scrollWidth);
 }
-  goToWard(item: any) {
-    console.log(item);
+  goToWard(item: RestaurantModel) {
+        this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: item.osmId
+      }
+    });
   }
-  
+  constructor(private router: Router){}
 }

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Userprofile } from './userprofile';
+import { provideMockStore } from '@ngrx/store/testing';
+import { provideRouter } from '@angular/router';
 
 describe('Userprofile', () => {
   let component: Userprofile;
@@ -8,7 +10,23 @@ describe('Userprofile', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Userprofile]
+      imports: [Userprofile],
+          providers:[
+            provideRouter([]),
+            provideMockStore({
+  initialState: {
+user:{
+  user: null,
+  loading: false,
+  phoneResult: [],
+  error: null,
+}
+
+  }
+  
+}),
+
+      ]
     })
     .compileComponents();
 

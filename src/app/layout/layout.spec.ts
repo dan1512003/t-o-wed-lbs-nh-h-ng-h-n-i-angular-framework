@@ -27,6 +27,12 @@ describe('Layout', () => {
       cuisine: { data: [], loading: false, error: null },
       restaurantCusine: { data: [], loading: false, error: null }
     },
+    user:{
+  user: null,
+  loading: false,
+  phoneResult: [],
+  error: null,
+}
           }
         }),
       ]

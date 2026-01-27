@@ -128,7 +128,8 @@ export class User {
     email: string,
     phone: string,
     lastname: string,
-    firstname: string
+    firstname: string,
+    oldemail:string
   ): Observable<any> {
     return this.http.post<any>(
       `${this.baseUrl}/api/edituser`,
@@ -137,7 +138,8 @@ export class User {
         email,
         phone,
         lastname,
-        firstname
+        firstname,
+        oldemail
       },
       this.httpOptions
     ).pipe(
@@ -172,4 +174,18 @@ export class User {
       })
     );
   }
+
+logout(): Observable<null> {
+  return this.http.get<null>(
+    `${this.baseUrl}/api/logout`,
+    this.httpOptions
+  ).pipe(
+    catchError(err => {
+      console.error('logout error', err);
+      return of(null);
+    })
+  );
+}
+
+
 }

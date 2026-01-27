@@ -86,8 +86,12 @@ getStarFill(index: number, overRating?: number): number {
     });
   }
 
-  goToWard(item: any) {
-    console.log(item);
+  goToWard(item: RestaurantModel) {
+        this.router.navigate(['/restaurantdetail'], {
+      queryParams: {
+        osmid: item.osmId
+      }
+    });
   }
 
   goToAll() {
