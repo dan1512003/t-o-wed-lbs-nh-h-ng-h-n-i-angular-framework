@@ -155,7 +155,11 @@ getRating(restaurant)
            style="width:25px; height:50px; position:absolute; top:45%; background-color:white; z-index:20;">
         <i class="fa-solid" [ngClass]="isFullMap() ? 'fa-chevron-right' : 'fa-chevron-left'" style="color:black;"></i>
       </div>
-
+<div class="my-location-btn"
+     (click)="goToMyLocation()"
+     title="My location">
+  <i class="fa-solid fa-location-crosshairs"></i>
+</div>
       <div id="map" style="height:100%; width:100%; z-index:1; margin:0; padding:0;"></div>
 
       <!-- Restaurant Panel -->

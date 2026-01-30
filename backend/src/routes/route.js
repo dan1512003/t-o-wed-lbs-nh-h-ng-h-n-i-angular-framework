@@ -40,6 +40,6 @@ router.get('/logout', userController.logout);
 router.get('/reverse', placeController.getAddressFromLatLon);
 
 //route controller
-router.get('/route',routeController.getRoute)
+router.post('/route',routeController.getRoute)
 module.exports = router;
 

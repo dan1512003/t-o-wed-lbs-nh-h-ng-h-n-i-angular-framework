@@ -238,7 +238,14 @@ scrollTo(sectionId: string) {
 
   }
 onTapDirection(){
-  this.router.navigate(['/direction']);
+  if (!this.restaurant()) return;
+
+      this.router.navigate(['/direction'], {
+      queryParams: {
+        osmid: this.restaurant()?.osmId??""
+      }
+    });
+
 }
    onTapReview(){
       this.router.navigate(['/review'], {

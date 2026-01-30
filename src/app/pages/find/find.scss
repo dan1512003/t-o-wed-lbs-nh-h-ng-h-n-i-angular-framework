@@ -186,3 +186,59 @@
     }
   }
 }
+
+::ng-deep .my-location-marker {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  animation: pulse-scale 0.8s ease-in-out infinite alternate;
+}
+
+
+@keyframes pulse-scale {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+
+//my location
+.my-location-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background-color: white;
+  border: 2px solid #ccc;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 30;
+
+  transition: all 0.2s ease;
+}
+
+.my-location-btn i {
+  font-size: 18px;
+  color: #333;
+}
+
+.my-location-btn:hover {
+  border-color: #0d6efd;      
+  background-color: #e7f1ff;
+}
+
+.my-location-btn:hover i {
+  color: #0d6efd;
+}

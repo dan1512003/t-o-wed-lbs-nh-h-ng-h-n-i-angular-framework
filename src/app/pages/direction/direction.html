@@ -40,16 +40,15 @@ style="height: 500px; position: relative;z-index: 1;"
     margin-left: 7px;
     font-size: 14px;"
       type="text"
-      [(ngModel)]="searchText"
       placeholder="Nhập vị trí nhà hàng"
-      (input)="onSearchChange()"
-      (keyup.enter)="submitSearch()"
+        [formControl]="searchControl"
+  
     />
   </div>
 
-@if(results.length > 0){
+@if(resultsearch().length > 0){
 <div class="results" >
-   @for (item of results; track $index) {
+   @for (item of resultsearch(); track $index) {
 
      <div
       class="result-item"
@@ -72,6 +71,11 @@ style="height: 500px; position: relative;z-index: 1;"
 
 </div>
 }
+<div class="my-location-btn"
+     (click)="goToMyLocation()"
+     title="My location">
+  <i class="fa-solid fa-location-crosshairs"></i>
+</div>
      <div id="map" style="height:100%; width:100%; z-index: 1; margin: 0;padding: 0;"></div>
 
 
@@ -97,77 +101,131 @@ style="height: 500px; position: relative;z-index: 1;"
         </div>
       }
     </div>
+   <div class="route-scroll">
+  @if (resultRoute(); as route) {
+    <div class="route-summary">
+      Khoảng cách:
+      <strong>{{ route.distanceText }}</strong>
+      ·
+      <strong>{{ route.durationText }}</strong>
+      @if (directionselect) {
+        – {{ directionselect }}
+      }
+    </div>
+  }
+
+@for (step of resultRoute()?.steps; track $index) {
+  <div class="step-row">
+
+ 
+    @if (step.type === 'depart') {
+      <div class="row-start">
+        <div class="start-icon-custom">
+          <div class="circle-outer">
+            <div class="circle-middle">
+              <div class="circle-inner"></div>
+            </div>
+          </div>
+        </div>
+        <span class="start-text">Vị trí của bạn</span>
+      </div>
+    }
+
+
+    @else if (step.type === 'arrive') {
+      <i class="fa-solid fa-location-dot destination-icon"></i>
+      <div class="step-text">
+        {{ getStepText(step) }}
+      </div>
+    }
+
+    <!-- ➡️ STEP THƯỜNG -->
+    @else {
+      <i [class]="getStepIcon(step)" class="step-icon"></i>
+
+      <div class="step-text">
+        {{ getStepText(step) }}
+      </div>
+
+      <div class="step-distance">
+        {{ step.distanceText }}
+      </div>
+    }
+
+  </div>
+}
+
+</div>
+
+
+
   </div>
 }
 
 <!-- Restaurant Panel -->
-@if (isClickMarker()) {
-  <div class="restaurant-panel">
-    <div class="panel-overlay">
-      <div class="restaurant-card" (click)="goToRestaurantPage()">
+ @if(isClickMarker()) {
+        <div class="restaurant-panel">
+          <div class="panel-overlay">
+           @if(restaurant() !=null){
+             <div class="restaurant-card" (click)="goToRestaurantPage()">
 
-        <!-- Restaurant Image -->
-        <div class="restaurant-image" [ngStyle]="{
-          'background-image': restaurant?.image ? 'url(' + restaurant.image + ')' : 'none',
-          'background-color': restaurant?.image ? 'transparent' : 'grey'
-        }">
-          <button class="close-btn" (click)="closeMarker($event)">
-            <i class="fa fa-times"></i>
-          </button>
-        </div>
-
-        <!-- Restaurant Name -->
-        <div class="restaurant-name">{{ restaurant.name }}</div>
-
-        <!-- Star Rating -->
-        <div class="d-flex align-items-center justify-content-start">
-          <h4 class="d-flex align-items-center justify-content-start star-container">4.7</h4>
-
-         @for (_ of [].constructor(totalStars); track $index) {
-            <div class="d-flex align-items-center justify-content-start star-container">
-              <div class="star-wrapper" [ngStyle]="{
-                'position': 'relative',
-                'width': '25px',
-                'height': '30px',
-                'margin': '0',
-                'padding': '0',
-                'display': 'flex'
+              <div class="restaurant-image" [ngStyle]="{
+                'background-image': restaurant()?.image ? 'url(' + restaurant()?.image + ')' : 'none',
+                'background-color': restaurant()?.image ? 'transparent' : 'grey'
               }">
-                <div [ngStyle]="{
-                  color: 'lightgray',
-                  fontSize: '30px',
-                  lineHeight: '1',
-                  position: 'absolute',
-                  top: '0',
-                  left: '0'
-                }">★</div>
-
-                <div [ngStyle]="{
-                  color: 'red',
-                  fontSize: '30px',
-                  lineHeight: '1',
-                  position: 'absolute',
-                  top: '0',
-                  left: '0',
-                  width: getStarFill($index) + '%',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap'
-                }">★</div>
+                <button class="close-btn" (click)="closeMarker($event)">
+                  <i class="fa fa-times"></i>
+                </button>
               </div>
+
+              <div class="restaurant-name">{{ restaurant()?.name }}</div>
+
+              <div class="d-flex align-items-center justify-content-start">
+                <h4 class="d-flex align-items-center justify-content-start star-container">{{overallrating()}}</h4>
+
+               @for (_ of [].constructor(totalStars); track $index) {
+                  <div class="d-flex align-items-center justify-content-start star-container">
+                    <div class="star-wrapper" [ngStyle]="{
+                      position: 'relative',
+                      width: '25px',
+                      height: '30px',
+                      margin: '0',
+                      padding: '0',
+                      display: 'flex'
+                    }">
+                      <div [ngStyle]="{
+                        color: 'lightgray',
+                        fontSize: '30px',
+                        lineHeight: '1',
+                        position: 'absolute',
+                        top: '0',
+                        left: '0'
+                      }">★</div>
+
+                      <div [ngStyle]="{
+                        color: 'red',
+                        fontSize: '30px',
+                        lineHeight: '1',
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: getStarFill($index) + '%',
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap'
+                      }">★</div>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="restaurant-hours">{{ restaurant()?.openingHour }}</div>
+              <div class="tap-to-open">Tap to open page</div>
+
             </div>
-          }
+           }
+          </div>
         </div>
-
-    
-        <div class="restaurant-hours">{{ restaurant.openingHour }}</div>
-
-      
-        <div class="tap-to-open">Tap to open page</div>
-
-      </div>
-    </div>
-  </div>
-}
+      }
 
 
     </div>

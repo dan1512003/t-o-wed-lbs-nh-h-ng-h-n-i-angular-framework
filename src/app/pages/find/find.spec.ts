@@ -25,7 +25,20 @@ describe('Find', () => {
                 resultsRestaurant:[],
                 loading: false,
                 error:  null,
-            }
+            },
+             searchMap: {
+  results: [],
+  resultRestaurant: null,
+  routeResult: null,
+  loading: false,
+  error: null,
+},
+                 geolocation:{
+  permissionGranted: false,
+  currentLocation: null,
+  loading: false,
+  error: null,
+}
           }
         }),
       ]

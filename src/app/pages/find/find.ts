@@ -12,6 +12,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { search } from '../../store/search/search.actions';
 import { selectResults } from '../../store/search/search.selectors';
 import { NominatimPlace } from '../../model/nominatimplace/nominatimplace.model';
+import { getCurrentLocation, requestLocationPermission } from '../../store/geolocation/geolocation.action';
+import { selectCurrentLocation, selectPermissionGranted } from '../../store/geolocation/geolocation.selectors';
 
 
 
@@ -35,15 +37,19 @@ export class Find implements AfterViewInit {
    hasSearched = input<boolean>();
   resultsRestaurant = this.store.selectSignal(selectResultsRestaurant);
   loadingRestaurant = this.store.selectSignal(selectLoadingRestaurant);
+  resultsGeolocation =this.store.selectSignal(selectCurrentLocation);
+  resultspermission =this.store.selectSignal(selectPermissionGranted);
    resultsSearch = this.store.selectSignal(selectResults);
    isSearch =signal<boolean>(false);
    isSetView=signal<boolean>(false);
+   mapReady = signal(false);
 
 
    searchControl = new FormControl('');
      restaurant =signal<RestaurantModel | null>(null)
  private map: any;
 private markerLayer: any;
+private myLocationMarker?: any;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -51,9 +57,29 @@ private markerLayer: any;
     private router:Router,
     private store:Store<AppState>
   ) {
-
-
    
+this.store.dispatch( requestLocationPermission());
+this.store.dispatch(getCurrentLocation());
+effect(() => {
+   console.log('permission:', this.resultspermission());
+  console.log('location:', this.resultsGeolocation());
+  console.log('mapReady:', this.mapReady());
+  const permissionGranted = this.resultspermission();
+  const location = this.resultsGeolocation();
+  const mapReady = this.mapReady();
+ console.log('permission:', this.resultspermission());
+  console.log('location:', this.resultsGeolocation());
+  console.log('mapReady:', this.mapReady());
+  if (!mapReady || !permissionGranted || !location) return;
+
+  this.renderMyLocationMarker(location.lat, location.lng);
+
+  this.map.setView([location.lat, location.lng], 16, {
+    animate: true,
+  });
+});
+
+
 
     effect(() => {
 
@@ -208,6 +234,11 @@ getStarFill(index: number, overRating?: number): number {
     this.store.dispatch(findBySearch({ query: value }));
       
   }
+  goToMyLocation(){
+
+this.store.dispatch(getCurrentLocation());
+
+  }
 //map
  
 onMapMoveEnd(event: L.LeafletEvent) {
@@ -311,6 +342,27 @@ const customIcon = L.divIcon({
 });
    }
   }
+  private async renderMyLocationMarker(lat: number, lng: number) {
+  if (!isPlatformBrowser(this.platformId)) return;
+
+  const L = await import('leaflet');
+
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="my-location-marker"></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 8],
+  });
+
+  // remove marker cũ nếu có
+  if (this.myLocationMarker) {
+    this.map.removeLayer(this.myLocationMarker);
+  }
+
+  this.myLocationMarker = L.marker([lat, lng], { icon })
+    .addTo(this.map);
+}
+
   async ngAfterViewInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
     
@@ -321,7 +373,7 @@ const customIcon = L.divIcon({
         zoom: 13,
       });
       this.markerLayer = L.layerGroup().addTo(this.map);
-       
+       this.mapReady.set(true);
 this.map.on('moveend', (event: L.LeafletEvent) =>
   this.onMapMoveEnd(event)
 );
